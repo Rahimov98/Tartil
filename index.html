@@ -14,10 +14,10 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-app
 main{max-width:620px;margin:0 auto;padding:12px}
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:6px 0 8px}
 .sel{display:flex;gap:8px}
-select{flex:1;min-width:0;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:1rem;padding:0 8px}
+select{flex:1;min-width:0;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:1rem;padding:0 8px}
 #ay{flex:0 0 38%}
 .row{display:flex;gap:8px;margin-top:8px}
-.btn{flex:1;min-height:46px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);font-size:.95rem;font-weight:600;cursor:pointer;padding:0 6px}
+.btn{flex:1;min-height:40px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);font-size:.95rem;font-weight:600;cursor:pointer;padding:0 6px}
 .btn.sec{background:var(--card);color:var(--accent)}
 .btn.stop{background:var(--bad);border-color:var(--bad);color:#fff}
 .btn:disabled{opacity:.5}
@@ -50,17 +50,25 @@ select{flex:1;min-width:0;height:44px;border:1px solid var(--line);border-radius
     <button class="btn sec" id="hd">Текст: скрыт</button>
   </div>
   <div class="row">
-    <button class="btn sec" id="lis">Слушать аят</button>
+    <button class="btn sec" id="pv">◀ Пред. аят</button>
+    <button class="btn sec" id="nx">След. аят ▶</button>
     <button class="btn sec" id="rs">Сначала</button>
+  </div>
+  <div class="row">
+    <select id="qr" aria-label="Чтец">
+      <option value="yasser">Ясир ад-Даусари</option>
+      <option value="husary">Махмуд аль-Хусари</option>
+    </select>
+    <button class="btn sec" id="lis">Слушать аят</button>
   </div>
   <p class="stat" id="stat" aria-live="polite"></p>
 </div>
 <section class="card"><div id="text" lang="ar"></div></section>
 <p class="msg" id="msg">Загрузка…</p>
-<p class="msg">Читайте вслух: слова открываются по мере верного чтения. Красное: другое слово, жёлтое: пропущено. Нажмите на скрытое слово, чтобы подсмотреть. Проверяются слова, не тааджвид.</p>
+<p class="msg">Читайте вслух: слова открываются по мере верного чтения. Красное: другое слово, жёлтое: пропущено. Нажмите на скрытое слово, чтобы подсмотреть. Чтобы перечитать предыдущий аят, просто начните читать его заново или нажмите «Пред. аят». Проверяются слова, не тааджвид.</p>
 </main>
 <script>
-var API="https://api.alquran.cloud/v1/",sura=1,W=[],AU=[],pos=0,run=false,hide=true,st={ok:0,bad:0,miss:0},audio=null,lastT="";
+var API="https://api.alquran.cloud/v1/",sura=1,W=[],pos=0,run=false,hide=true,st={ok:0,bad:0,miss:0},audio=null,lastT="";
 var $=function(i){return document.getElementById(i)};
 function norm(s){return s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g,"").replace(/[\u0671\u0622\u0623\u0625]/g,"\u0627").replace(/\u0649/g,"\u064A").replace(/\u0629/g,"\u0647").replace(/\u0627/g,"").trim()}
 function words(s){return s.split(/\s+/).filter(Boolean)}
@@ -87,7 +95,30 @@ function update(oldPos){
   if(pos>=W.length&&run){stop();msg("Сура завершена! Точность: "+Math.round(st.ok/Math.max(1,st.ok+st.bad+st.miss)*100)+"%")}
 }
 function mark(i,s){W[i].s=s}
+function seek(p){
+  var old=pos,i;
+  for(i=p;i<W.length;i++)W[i].s="";
+  pos=p;st={ok:0,bad:0,miss:0};
+  for(i=0;i<p;i++){if(W[i].s)st[W[i].s]++}
+  for(i=Math.max(0,p-1);i<=Math.min(W.length-1,Math.max(old,p));i++)view(i);
+  stat();if(W[pos])W[pos].el.scrollIntoView({block:"center",behavior:"smooth"});
+}
+function ayStart(a){for(var i=0;i<W.length;i++){if(W[i].a===a)return i}return -1}
+function go(d){
+  if(!W.length)return;
+  var cur=W[Math.min(pos,W.length-1)].a,t=ayStart(cur+d);
+  if(t>=0)seek(t);
+}
 function feed(list){
+  if(list.length>=2&&pos>0){
+    var h0=norm(list[0]),h1=norm(list[1]),near=false,j,p;
+    if(h0&&h1){
+      for(j=0;j<4&&pos+j<W.length;j++){if(sim(h0,W[pos+j].n)>=0.7){near=true;break}}
+      if(!near){for(p=pos-1;p>=Math.max(0,pos-120);p--){
+        if(p+1<W.length&&sim(h0,W[p].n)>=0.7&&sim(h1,W[p+1].n)>=0.7){seek(p);break}
+      }}
+    }
+  }
   var old=pos;
   list.forEach(function(h){
     if(pos>=W.length)return;
@@ -109,9 +140,9 @@ function reset(){
 }
 function load(n){
   stop();sura=n;msg("Загрузка…");
-  fetch(API+"surah/"+n+"/editions/quran-uthmani,ar.alafasy").then(function(r){return r.json()}).then(function(j){
-    var a=j.data[0].ayahs,box=$("text"),ay=$("ay");
-    AU=j.data[1].ayahs.map(function(x){return x.audio});W=[];box.innerHTML="";ay.innerHTML="";
+  fetch(API+"surah/"+n+"/quran-uthmani").then(function(r){return r.json()}).then(function(j){
+    var a=j.data.ayahs,box=$("text"),ay=$("ay");
+    W=[];box.innerHTML="";ay.innerHTML="";
     a.forEach(function(x,i){
       var ws=words(x.text);
       if(i===0&&n!==1&&n!==9&&norm(ws[0])==="بسم")ws=ws.slice(4);
@@ -153,14 +184,24 @@ $("go").onclick=function(){
   try{rec.start();run=true;ui();view(pos);msg("Слушаю… читайте с выбранного места.")}catch(e){msg("Не удалось запустить микрофон.")}
 };
 $("hd").onclick=function(){hide=!hide;this.textContent="Текст: "+(hide?"скрыт":"виден");for(var i=0;i<W.length;i++)view(i)};
-$("rs").onclick=reset;
+$("rs").onclick=function(){$("ay").value=1;reset()};
 $("ay").onchange=reset;
 $("su").onchange=function(){load(+this.value)};
-$("lis").onclick=function(){
+var QR={yasser:["Yasser_Ad-Dussary_128kbps"],husary:["Husary_128kbps","Husary_64kbps"]};
+function p3(n){return("00"+n).slice(-3)}
+function playAyah(a,k){
+  k=k||0;var f=QR[$("qr").value];
+  if(k>=f.length){msg("Аудио этого чтеца для аята не найдено.");return}
   if(audio)audio.pause();
-  var i=W[Math.min(pos,W.length-1)];if(!i)return;
-  audio=new Audio(AU[i.a]);audio.play().catch(function(){msg("Не удалось воспроизвести аудио.")});
-};
+  audio=new Audio("https://everyayah.com/data/"+f[k]+"/"+p3(sura)+p3(a+1)+".mp3");
+  audio.onerror=function(){playAyah(a,k+1)};
+  audio.play().catch(function(){});
+}
+$("lis").onclick=function(){var w=W[Math.min(pos,W.length-1)];if(w)playAyah(w.a)};
+$("pv").onclick=function(){go(-1)};
+$("nx").onclick=function(){go(1)};
+try{var q=localStorage.getItem("tartil_qr");if(q&&QR[q])$("qr").value=q}catch(e){}
+$("qr").onchange=function(){try{localStorage.setItem("tartil_qr",this.value)}catch(e){}};
 fetch(API+"surah").then(function(r){return r.json()}).then(function(j){
   j.data.forEach(function(x){var o=document.createElement("option");o.value=x.number;o.textContent=x.number+". "+x.englishName+" ("+x.numberOfAyahs+")";$("su").appendChild(o)});
   load(1);
@@ -168,3 +209,4 @@ fetch(API+"surah").then(function(r){return r.json()}).then(function(j){
 </script>
 </body>
 </html>
+
