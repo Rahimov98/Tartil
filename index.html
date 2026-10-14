@@ -8,7 +8,7 @@
 <title>Тартил: Коран по страницам</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f2f5f7;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d5dbe3;--accent:#1d4e89;--ok:#1b7f5c;--bad:#c0392b;--miss:#b7791f;--okbg:#dff3ea;--badbg:#fbe4e1;--missbg:#fbefd5;--pill:#cfd8e3;--fs:1.9rem;
+:root{--bg:#f2f5f7;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d5dbe3;--accent:#1d4e89;--ok:#1b7f5c;--bad:#c0392b;--miss:#b7791f;--okbg:#dff3ea;--badbg:#fbe4e1;--missbg:#fbefd5;--pill:#cfd8e3;--fs:1.85rem;
 --c-gray:#8b95a7;--c-m1:#3b82f6;--c-m2:#6366f1;--c-m3:#1d4ed8;--c-m4:#1e1b8f;--c-q:#d11a2a;--c-g:#f07a1a;--c-i1:#9333ea;--c-i2:#db2777;--c-d1:#16a34a;--c-d2:#0d9488;--c-d3:#65a30d;--c-iq:#0ea5e9}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1624;--card:#18223a;--ink:#e8edf6;--mute:#9aa6bd;--line:#2b3957;--accent:#6fa8ee;--ok:#5fd0a0;--bad:#ff8a7a;--miss:#f0c066;--okbg:#14382c;--badbg:#45211d;--missbg:#40320f;--pill:#34445f;
 --c-gray:#8e98ab;--c-m1:#7db0ff;--c-m2:#a5a8ff;--c-m3:#6f95ff;--c-m4:#8f8cff;--c-q:#ff7b86;--c-g:#ffb066;--c-i1:#d6a2ff;--c-i2:#ff8fc0;--c-d1:#6fe0a2;--c-d2:#5fd6cb;--c-d3:#b4e66f;--c-iq:#7dd8ff}}
@@ -17,46 +17,47 @@
 :root[data-theme="light"]{color-scheme:light;--bg:#f2f5f7;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d5dbe3;--accent:#1d4e89;--ok:#1b7f5c;--bad:#c0392b;--miss:#b7791f;--okbg:#dff3ea;--badbg:#fbe4e1;--missbg:#fbefd5;--pill:#cfd8e3;
 --c-gray:#8b95a7;--c-m1:#3b82f6;--c-m2:#6366f1;--c-m3:#1d4ed8;--c-m4:#1e1b8f;--c-q:#d11a2a;--c-g:#f07a1a;--c-i1:#9333ea;--c-i2:#db2777;--c-d1:#16a34a;--c-d2:#0d9488;--c-d3:#65a30d;--c-iq:#0ea5e9}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(70px + env(safe-area-inset-bottom,0px))}
-main{max-width:620px;margin:0 auto;padding:10px 12px}
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:6px 0}
-.tools{display:flex;gap:6px}
-.tool{flex:1;min-width:0;height:44px;border-radius:12px;border:1px solid var(--accent);background:var(--card);color:var(--accent);font-size:1.2rem;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;transition:transform .1s,opacity .15s}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(58px + env(safe-area-inset-bottom,0px))}
+main{max-width:620px;margin:0 auto;padding:6px 10px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:4px 0 2px}
+.tools{display:flex;gap:4px}
+.tool{flex:1;min-width:0;height:36px;border-radius:10px;border:1px solid var(--accent);background:var(--card);color:var(--accent);font-size:1.05rem;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;transition:transform .1s,opacity .15s}
 .tool:active{transform:scale(.96)}
-.tool.main{flex:2.4;background:var(--accent);color:var(--bg);font-size:.95rem;font-weight:600}
+.tool.main{flex:2.2;background:var(--accent);color:var(--bg);font-size:.88rem;font-weight:600}
 .tool.main.stop{background:var(--bad);border-color:var(--bad);color:#fff}
 .tool:disabled{opacity:.5}
-select,input[type=number]{min-width:0;height:42px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:1rem;padding:0 8px}
+select,input[type=number]{min-width:0;height:34px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:.9rem;padding:0 6px}
 select{flex:1}
-.sel{display:flex;gap:8px;margin-top:8px}
-.row{display:flex;gap:8px;margin-top:8px}
-.btn{flex:1;min-height:44px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);font-size:.95rem;font-weight:600;cursor:pointer;padding:0 6px;display:flex;align-items:center;justify-content:center;transition:transform .1s}
+.sel{display:flex;gap:6px;margin-top:6px}
+.row{display:flex;gap:6px;margin-top:6px}
+.btn{flex:1;min-height:34px;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);font-size:.88rem;font-weight:600;cursor:pointer;padding:0 5px;display:flex;align-items:center;justify-content:center;transition:transform .1s}
 .btn:active{transform:scale(.97)}
 .btn.sec{background:var(--card);color:var(--accent)}
 .btn.on{background:var(--accent);color:var(--bg)}
 .btn.stop{background:var(--bad);border-color:var(--bad);color:#fff}
-.btn.sm{flex:0 0 48px}
+.btn.sm{flex:0 0 38px;min-height:34px;font-size:1rem}
 .btn:disabled{opacity:.5}
-.tool:focus-visible,.btn:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.pgrow{display:flex;gap:8px;align-items:center;margin-top:8px}
-.pgmid{flex:1;min-width:0;text-align:center;line-height:1.2}
-.pgmid input{width:84px;text-align:center;font-weight:700}
-.pgmid small{display:block;color:var(--mute);font-size:.78rem;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sjrow{display:flex;gap:8px;margin-top:8px}
-.sjrow select{font-size:.95rem;font-weight:500}
-.stat{margin:6px 0 0;font-size:.82rem;color:var(--mute)}
+.tool:focus-visible,.btn:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.pgrow{display:flex;gap:5px;align-items:center;margin-top:5px}
+.pgmid{flex:1;min-width:0;text-align:center;line-height:1.15}
+.pgmid input{width:72px;text-align:center;font-weight:700;height:34px}
+.pgmid small{display:block;color:var(--mute);font-size:.72rem;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sjrow{display:flex;gap:5px;margin-top:5px}
+.sjrow select{font-size:.88rem;font-weight:500;height:34px}
+.stat{margin:4px 0 0;font-size:.78rem;color:var(--mute)}
 .stat b{color:var(--ink)}
-.heard{font-family:Amiri,serif;font-size:1.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:8px}
-.card summary{font-weight:600;cursor:pointer}
-.card summary+*{margin-top:10px}
-.pl{display:flex;gap:8px;align-items:center}
-.pl .btn{flex:0 0 48px}
-#tc{border:3px double var(--accent);border-radius:10px;padding:14px}
-#text{font-family:Amiri,"Traditional Arabic","Scheherazade New",serif;font-size:var(--fs);line-height:2.5;direction:rtl;text-align:justify}
-.sh{display:block;text-align:center;border:2px solid var(--accent);border-radius:10px;padding:0 8px;margin:8px 0;color:var(--accent);font-size:1.3rem;line-height:2.1}
-.bsm{display:block;text-align:center;margin:2px 0;line-height:2.2}
-.w{padding:0 3px;border-radius:7px;cursor:pointer}
+.heard{font-family:Amiri,serif;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:6px}
+.card summary{font-weight:600;cursor:pointer;font-size:.92rem}
+.card summary+*{margin-top:8px}
+.pl{display:flex;gap:6px;align-items:center}
+.pl .btn{flex:0 0 40px}
+#tc{border:2px double var(--accent);border-radius:10px;padding:10px 12px}
+#text{font-family:Amiri,"Traditional Arabic","Scheherazade New",serif;font-size:var(--fs);line-height:2.4;direction:rtl;text-align:justify}
+.sh{display:block;text-align:center;border:1.5px solid var(--accent);border-radius:8px;padding:0 6px;margin:6px 0;color:var(--accent);font-size:1.15rem;line-height:1.9}
+.bsm{display:block;text-align:center;margin:4px 0 2px;line-height:2.2}
+.bsm .w{font-size:var(--fs)}
+.w{padding:0 2px;border-radius:6px;cursor:pointer}
 .w i{font-style:normal}
 .w u{text-decoration:none}
 .w.hid{background:var(--pill);color:transparent;user-select:none}
@@ -68,9 +69,9 @@ select{flex:1}
 .w.miss{background:var(--missbg);color:var(--miss)}
 .w.bad i,.w.miss i{color:inherit!important}
 .w.skip{opacity:.45}
-.w.cur{box-shadow:0 3px 0 var(--accent)}
+.w.cur{box-shadow:0 2px 0 var(--accent)}
 .w.now{outline:2px solid var(--accent);outline-offset:1px}
-.num{color:var(--accent);font-size:1.2rem;padding:0 2px;cursor:pointer}
+.num{color:var(--accent);font-size:1.1rem;padding:0 2px;cursor:pointer}
 .num.lrn{color:var(--ok);font-weight:700}
 .t-ham_wasl,.t-slnt,.t-laam_shamsiyah{--tc:var(--c-gray)}
 .t-madda_normal{--tc:var(--c-m1)}.t-madda_permissible{--tc:var(--c-m2)}.t-madda_obligatory{--tc:var(--c-m3)}.t-madda_necessary{--tc:var(--c-m4)}
@@ -79,40 +80,42 @@ select{flex:1}
 .t-idgham_ghunnah,.t-idgham_shafawi{--tc:var(--c-d1)}.t-idgham_wo_ghunnah{--tc:var(--c-d2)}.t-idgham_mutajanisayn,.t-idgham_mutaqaribayn{--tc:var(--c-d3)}
 .t-iqlab{--tc:var(--c-iq)}
 .tj i[class^="t-"]{color:var(--tc)}
-.dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--tc);margin-right:6px;vertical-align:-1px}
-.leg{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:.85rem}
-.msg{color:var(--mute);font-size:.85rem;margin:8px 0 0}
-.rules h3{font-size:1rem;margin:0 0 6px}
-.rules p{margin:4px 0;font-size:.92rem}
-.ar{font-family:Amiri,serif;font-size:1.15rem;direction:rtl;unicode-bidi:isolate}
-.nav{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);z-index:9}
-.nav button{flex:1;min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.95rem;font-weight:600;cursor:pointer;transition:transform .1s}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--tc);margin-right:5px;vertical-align:-1px}
+.leg{display:grid;grid-template-columns:1fr 1fr;gap:5px 10px;font-size:.82rem}
+.msg{color:var(--mute);font-size:.8rem;margin:6px 0 0}
+.rules h3{font-size:.95rem;margin:0 0 5px}
+.rules p{margin:3px 0;font-size:.88rem}
+.ar{font-family:Amiri,serif;font-size:1.1rem;direction:rtl;unicode-bidi:isolate}
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;gap:6px;padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);z-index:9}
+.nav button{flex:1;min-height:40px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.88rem;font-weight:600;cursor:pointer;transition:transform .1s}
 .nav button:active{transform:scale(.97)}
 .nav button[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
-.nav button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);width:calc(100% - 32px);max-width:420px;padding:16px}
+.nav button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);width:calc(100% - 28px);max-width:400px;padding:14px}
 dialog::backdrop{background:rgba(0,0,0,.55)}
-.big{font-size:2.4rem;font-weight:700;margin:0;line-height:1.1}
-.sc h2{font-size:1rem;margin:0 0 8px}
-.pb{height:10px;border-radius:6px;background:var(--pill);overflow:hidden;margin:8px 0}
-.pb i{display:block;height:100%;background:var(--ok);border-radius:6px}
+.big{font-size:2.2rem;font-weight:700;margin:0;line-height:1.1}
+.sc h2{font-size:.95rem;margin:0 0 6px}
+.pb{height:8px;border-radius:5px;background:var(--pill);overflow:hidden;margin:6px 0}
+.pb i{display:block;height:100%;background:var(--ok);border-radius:5px}
 .pb.g i{background:var(--accent)}
-.chart{display:flex;align-items:flex-end;gap:6px;height:110px;margin-top:8px}
-.chart div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:.75rem;color:var(--mute)}
-.chart i{display:block;width:100%;background:var(--accent);border-radius:5px 5px 0 0;min-height:2px}
+.chart{display:flex;align-items:flex-end;gap:5px;height:100px;margin-top:6px}
+.chart div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:.7rem;color:var(--mute)}
+.chart i{display:block;width:100%;background:var(--accent);border-radius:4px 4px 0 0;min-height:2px}
 .chart i.z{background:var(--pill)}
-.rowb{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:8px 0;color:var(--ink);font:inherit;cursor:pointer}
+.rowb{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:7px 0;color:var(--ink);font:inherit;cursor:pointer}
 .rowb:first-of-type{border-top:0}
-.rowb .t{display:flex;justify-content:space-between;gap:8px}
-.rowb .pb{margin:4px 0 0}
-.tag{font-size:.75rem;padding:1px 8px;border-radius:8px;background:var(--missbg);color:var(--miss)}
+.rowb .t{display:flex;justify-content:space-between;gap:6px}
+.rowb .pb{margin:3px 0 0}
+.tag{font-size:.72rem;padding:1px 7px;border-radius:7px;background:var(--missbg);color:var(--miss)}
 .tag.ok{background:var(--okbg);color:var(--ok)}
-.kv{display:flex;gap:16px;flex-wrap:wrap;color:var(--mute);font-size:.9rem}
-.kv b{color:var(--ink);font-size:1.1rem}
-.wake-badge{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;color:var(--ok);margin-left:6px;opacity:0;transition:opacity .3s}
+.kv{display:flex;gap:12px;flex-wrap:wrap;color:var(--mute);font-size:.85rem}
+.kv b{color:var(--ink);font-size:1.05rem}
+.wake-badge{display:inline-flex;align-items:center;gap:3px;font-size:.72rem;color:var(--ok);margin-left:4px;opacity:0;transition:opacity .3s}
 .wake-badge.on{opacity:1}
-.wake-badge::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);animation:pulse 1.5s infinite}
+.wake-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok);animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.chk{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--mute);margin-top:6px;cursor:pointer}
+.chk input{width:16px;height:16px;accent-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -131,7 +134,6 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
     <p class="stat heard" id="hr" lang="ar" dir="rtl" hidden></p>
   </div>
 
-  <!-- Быстрый выбор суры и джуза -->
   <div class="sjrow">
     <select id="su" aria-label="Сура" title="Перейти к суре"></select>
     <select id="ju" aria-label="Джуз" title="Перейти к джузу"></select>
@@ -152,18 +154,19 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
   </section>
 
   <section class="card" id="tc"><div id="text" lang="ar"></div></section>
-  <div class="row"><button class="btn sec" id="pp2">◀ Пред. страница</button><button class="btn sec" id="np2">След. страница ▶</button></div>
+  <div class="row"><button class="btn sec" id="pp2">◀ Пред.</button><button class="btn sec" id="np2">След. ▶</button></div>
   <p class="msg" id="msg">Загрузка… <span class="wake-badge" id="wake">Экран не гаснет</span></p>
 
   <details class="card">
-    <summary>Аят, скорость, размер текста</summary>
+    <summary>Аят, скорость, размер, бисмиллях</summary>
     <div class="sel" style="margin-top:0"><select id="ay" aria-label="Начать с аята"></select><select id="sp" aria-label="Скорость аудио"><option value="0.75">Аудио 0.75×</option><option value="1">Аудио 1×</option><option value="1.25">Аудио 1.25×</option></select></div>
     <div class="row"><button class="btn sec" id="fm" aria-label="Уменьшить текст">A−</button><button class="btn sec" id="fp" aria-label="Увеличить текст">A+</button></div>
+    <label class="chk"><input type="checkbox" id="bsmChk" checked> Учитывать بِسْمِ ٱللَّهِ при чтении</label>
   </details>
   <details class="card"><summary>Цвета тааджвида</summary><div class="leg" id="leg"></div><p class="msg">Подробные правила: вкладка «Тааджвид». Цвета видны, когда слова открыты и кнопка 🎨 включена.</p></details>
   <details class="card">
     <summary>Как пользоваться</summary>
-    <p class="msg" style="margin-top:0">🎙 Начать: читайте вслух, слова открываются по мере верного чтения (красное: другое слово, жёлтое: пропущено). ⏮ ⏭: предыдущий и следующий аят. ↺: сначала. ✓: отметить выученное. Последняя кнопка переключает текст: виден, скрыт, подсказка (первая буква). Нажмите на скрытое слово, чтобы подсмотреть. ▶ возле чтеца: «Стр.» играет всю страницу подряд, «×3» повторяет каждый аят 3 раза, «Аят» играет один аят. Нажатие на номер аята ﴿٣﴾ в тексте проигрывает его. Проверяются слова, а не качество тааджвида. Разбивка на строки не совпадает с печатным мусхафом.<br><br>✨ <b>Новое:</b> экран не гаснет во время чтения и прослушивания. Быстрый выбор суры и джуза сверху. Кнопка 🌓 переключает тему.</p>
+    <p class="msg" style="margin-top:0">🎙 Начать: читайте вслух. Слова открываются по мере верного чтения (красное — другое слово, жёлтое — пропуск). ⏮ ⏭ — аяты. ↺ — сначала. ✓ — отметить выученное. 🙈 — текст: виден / скрыт / подсказка. Нажмите на скрытое слово, чтобы подсмотреть. ▶ — аудио чтеца. Номер аята ﴿٣﴾ в тексте — проиграть его.<br><br>✨ Бисмиллях перед сурами теперь тоже проверяется (можно отключить в настройках). Экран не гаснет при чтении. Сура и джуз — сверху.</p>
   </details>
 </div>
 
@@ -178,8 +181,8 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
   <button id="n3" aria-pressed="false">Статистика</button>
 </nav>
 <dialog id="dl" aria-labelledby="dlt">
-  <h2 id="dlt" style="font-size:1.1rem;margin:0 0 6px">Отметить выученное</h2>
-  <p class="msg" id="dls" style="margin:0 0 6px"></p>
+  <h2 id="dlt" style="font-size:1.05rem;margin:0 0 5px">Отметить выученное</h2>
+  <p class="msg" id="dls" style="margin:0 0 5px"></p>
   <div class="sel" style="margin-top:0"><select id="ds" aria-label="Сура"></select></div>
   <div class="sel"><select id="df" aria-label="С аята"></select><select id="dt" aria-label="По аят"></select></div>
   <div class="row"><button class="btn sec" id="dw">Вся сура</button><button class="btn sec" id="dp">Вся страница</button></div>
@@ -189,8 +192,9 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
 <script>
 var API="https://api.alquran.cloud/v1/",TJAPI="https://api.quran.com/api/v4/quran/verses/uthmani_tajweed?page_number=";
 var page=1,W=[],AYL=[],NUM=[],pos=0,run=false,hide=1,st={ok:0,bad:0,miss:0},audio=null,lastT="",INFO="",HASTJ=false,DM="range";
-var TOTAL=6236,SU=[],DB={L:{},goal:5,pg:{}},SET={qr:"yasser",sp:"1",md:"page:1",fs:1.9,tj:1,theme:""},PL={on:false,g:0,rep:0,k:0};
+var TOTAL=6236,SU=[],DB={L:{},goal:5,pg:{}},SET={qr:"yasser",sp:"1",md:"page:1",fs:1.85,tj:1,theme:"",bsm:1},PL={on:false,g:0,rep:0,k:0};
 var BSM="بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ";
+var BSM_WORDS=["بسم","الله","الرحمن","الرحيم"]; // нормализованные для сравнения
 var QR={yasser:["Yasser_Ad-Dussary_128kbps"],husary:["Husary_128kbps","Husary_64kbps"]};
 var MODES=[["page:1","Стр. ×1"],["page:3","Стр. ×3"],["page:5","Стр. ×5"],["loop:1","Стр. по кругу"],["ay:1","Аят ×1"],["ay:3","Аят ×3"],["ay:5","Аят ×5"],["ay:0","Аят ∞"]];
 var LEG=[["ham_wasl","Хамзат уасль"],["slnt","Немая буква"],["laam_shamsiyah","Лям шамсия"],["madda_normal","Мадд обычный (2)"],["madda_permissible","Мадд допустимый (2/4/6)"],["madda_obligatory","Мадд обязательный (4–5)"],["madda_necessary","Мадд необходимый (6)"],["qalaqah","Калькаля"],["ghunnah","Гунна"],["ikhfa","Ихфа"],["ikhfa_shafawi","Ихфа шафави"],["idgham_ghunnah","Идгам с гунной"],["idgham_wo_ghunnah","Идгам без гунны"],["idgham_shafawi","Идгам шафави"],["idgham_mutajanisayn","Идгам мутаджанисайн"],["idgham_mutaqaribayn","Идгам мутакарибайн"],["iqlab","Икляб"]];
@@ -202,7 +206,7 @@ try{var sv=JSON.parse(ls("tartil_set2")||"null");if(sv)for(var q in sv)SET[q]=sv
 function save(){ls("tartil_v2",JSON.stringify(DB))}
 function saveSet(){ls("tartil_set2",JSON.stringify(SET))}
 
-/* ---------- Wake Lock (экран не гаснет) ---------- */
+/* ---------- Wake Lock ---------- */
 var wakeLock=null;
 async function requestWake(){
   if(!("wakeLock" in navigator))return;
@@ -349,6 +353,22 @@ function buildWord(ch){
   return s;
 }
 
+/* ---------- добавить бисмиллях как проверяемые слова ---------- */
+function addBismillah(box,g){
+  var parts=BSM.split(/\s+/).filter(Boolean);
+  var wrap=mk("div","bsm");
+  parts.forEach(function(txt,idx){
+    var ch=plainChars(txt);
+    var s=buildWord(ch);
+    var o={n:norm(txt),g:g,el:s,s:"",peek:false,skip:false,bsm:true};
+    s.onclick=function(){if(!o.s){o.peek=!o.peek;view(W.indexOf(o))}};
+    W.push(o);
+    wrap.appendChild(s);
+    if(idx<parts.length-1)wrap.appendChild(document.createTextNode(" "));
+  });
+  box.appendChild(wrap);
+}
+
 /* ---------- загрузка страницы ---------- */
 function fail(){msg("Не удалось загрузить данные. Нужен интернет.")}
 function loadPage(p){
@@ -367,11 +387,23 @@ function loadPage(p){
       if(names.indexOf(x.surah.englishName)<0)names.push(x.surah.englishName);
       if(an===1){
         var h=mk("div","sh");h.textContent=x.surah.name;box.appendChild(h);
-        if(sn!==1&&sn!==9){var b=mk("div","bsm");b.textContent=BSM;box.appendChild(b)}
+        // Бисмиллях: добавляем как проверяемые слова (кроме Аль-Фатиха и Ат-Тауба)
+        if(sn!==1&&sn!==9){
+          if(SET.bsm){
+            addBismillah(box,g);
+          }else{
+            var b=mk("div","bsm");b.textContent=BSM;box.appendChild(b);
+          }
+        }
       }
       var ws=splitWords(TJ[key]?parseTj(TJ[key]):plainChars(x.text));
+      // Убираем бисмиллях из текста аята, если API его включил (мы уже добавили отдельно)
       if(an===1&&sn!==1&&sn!==9&&ws.length&&norm(plain(ws[0]))==="بسم")ws=ws.slice(4);
       var w0=W.length;
+      // если бисмиллях уже добавлен, w0 должен начинаться после него
+      if(an===1&&sn!==1&&sn!==9&&SET.bsm){
+        // w0 уже правильно указывает на начало аята после бисмилляха
+      }
       ws.forEach(function(ch){
         var s=buildWord(ch),o={n:norm(plain(ch)),g:g,el:s,s:"",peek:false,skip:false};
         s.onclick=function(){if(!o.s){o.peek=!o.peek;view(W.indexOf(o))}};
@@ -380,12 +412,19 @@ function loadPage(p){
       var nm=mk("span","num");nm.textContent="\uFD3F"+ar(an)+"\uFD3E";
       nm.onclick=function(){stopMic();PL.rep=0;playG(g,0)};
       NUM.push(nm);box.appendChild(nm);box.appendChild(document.createTextNode(" "));
-      AYL.push({s:sn,a:an,k:key,w0:w0,w1:W.length-1});
+      // AYL: для аята с бисмилляхом включаем слова бисмилляха в диапазон
+      var realW0=w0;
+      if(an===1&&sn!==1&&sn!==9&&SET.bsm){
+        // найти начало бисмилляха для этого аята
+        for(var bi=0;bi<W.length;bi++){
+          if(W[bi].g===g&&W[bi].bsm){realW0=bi;break}
+        }
+      }
+      AYL.push({s:sn,a:an,k:key,w0:realW0,w1:W.length-1});
       opt(ay,g,sn+":"+an);
     });
     INFO="Джуз "+ays[0].juz+" · "+names.join(", ");
     applyTj();markNums();reset();window.scrollTo(0,0);
-    // синхронизируем селекты суры/джуза
     if(ays.length){
       $("ju").value=ays[0].juz;
       $("su").value=ays[0].surah.number;
@@ -543,18 +582,18 @@ function stats(){
   $("vs").innerHTML=
    '<div class="card sc"><h2>Весь Коран</h2><p class="big">'+(cn/TOTAL*100).toFixed(2)+'%</p>'+bar(cn/TOTAL*100)+
    '<div class="kv"><span><b>'+cn+'</b> из '+TOTAL+' аятов</span><span><b>'+done+'</b> из 114 сур</span></div>'+
-   '<div class="kv" style="margin-top:6px"><span><b>'+pk.length+'</b> из 604 стр. прочитано</span>'+(pk.length?'<span>средняя точность <b>'+Math.round(pa/pk.length)+'%</b></span>':"")+'</div>'+
+   '<div class="kv" style="margin-top:5px"><span><b>'+pk.length+'</b> из 604 стр. прочитано</span>'+(pk.length?'<span>средняя точность <b>'+Math.round(pa/pk.length)+'%</b></span>':"")+'</div>'+
    '<p class="msg">'+pace+'</p></div>'+
    '<div class="card sc"><h2>Сегодня</h2><div class="kv"><span><b>'+td+'</b> аят из цели <b>'+goal+'</b></span><span>Серия: <b>'+sk[0]+'</b> дн.</span><span>Рекорд: <b>'+sk[1]+'</b> дн.</span></div>'+bar(td/goal*100,"g")+
    '<p class="msg">'+(td>=goal?"Цель на сегодня выполнена!":"Осталось до цели: "+(goal-td)+".")+'</p>'+
-   '<label class="msg">Цель в день, аятов: <input type="number" id="goal" min="1" max="500" value="'+goal+'" style="width:70px;height:36px"></label></div>'+
+   '<label class="msg">Цель в день, аятов: <input type="number" id="goal" min="1" max="500" value="'+goal+'" style="width:64px;height:32px"></label></div>'+
    '<div class="card sc"><h2>Последние 7 дней</h2><div class="chart">'+ch+'</div></div>'+
    '<div class="card sc"><h2>Мои суры</h2>'+(rows||'<p class="msg" style="margin:0">Пока ничего не выучено. В разделе «Чтение» нажмите «✓».</p>')+
-   '<p class="msg">Метка «повторить» появляется, если аяты не повторяли 7 дней и больше. Отметить повторение: ✓ → «Повторил».</p></div>'+
+   '<p class="msg">Метка «повторить» — если не повторяли 7+ дней. Отметить: ✓ → «Повторил».</p></div>'+
    '<details class="card sc"><summary>Все 114 сур</summary>'+(all||'<p class="msg">Список сур загрузится при подключении к интернету.</p>')+'</details>'+
    '<div class="card sc"><h2>Данные</h2><div class="row"><button class="btn sec" id="ex">Сохранить копию</button><button class="btn sec" id="im">Загрузить копию</button></div>'+
    '<div class="row"><button class="btn sec" id="rz">Сбросить прогресс</button></div><input type="file" id="fi" accept=".json" hidden>'+
-   '<p class="msg">Прогресс хранится в этом браузере. Сохраняйте копию, чтобы не потерять его.</p></div>';
+   '<p class="msg">Прогресс хранится в этом браузере. Сохраняйте копию.</p></div>';
   $("goal").onchange=function(){DB.goal=Math.max(1,Math.min(500,+this.value||5));save();stats()};
   Array.prototype.forEach.call(document.querySelectorAll(".rowb"),function(b){b.onclick=function(){tab(1);gotoSura(+b.dataset.n)}});
   $("ex").onclick=function(){
@@ -589,9 +628,9 @@ function renderRules(){
    ["Калькаля",["qalaqah"],'Буквы <span class="ar">ق ط ب ج د</span> с сукуном: лёгкий «отскок» звука.'],
    ["Мадд (удлинение)",["madda_normal","madda_permissible","madda_obligatory","madda_necessary"],'Обычный: 2 хараки. Допустимый: 2, 4 или 6 (например, при остановке на конце аята). Обязательный: 4–5. Необходимый: 6.'],
    ["Лям шамсия и хамзат уасль",["laam_shamsiyah","ham_wasl","slnt"],'Лям артикля <span class="ar">ٱل</span> не произносится перед «солнечными» буквами <span class="ar">ت ث د ذ ر ز س ش ص ض ط ظ ل ن</span>, а следующая буква читается с ташдидом. Соединительный алиф <span class="ar">ٱ</span> читается в начале слова и опускается при слитном чтении. Немые буквы пишутся, но не читаются. Всё это серого цвета.']
-  ],h='<h3 style="font-size:1.15rem">Правила тааджвида</h3><p class="msg" style="margin-top:0">Краткая памятка. Цвета в тексте подсвечивает данные Quran.com. Программа проверяет слова, а не качество тааджвида: для этого нужен учитель.</p>';
+  ],h='<h3 style="font-size:1.1rem">Правила тааджвида</h3><p class="msg" style="margin-top:0">Краткая памятка. Цвета в тексте подсвечивает данные Quran.com. Программа проверяет слова, а не качество тааджвида: для этого нужен учитель.</p>';
   R.forEach(function(r){
-    h+='<div style="margin-top:14px"><h3>'+r[1].map(dot).join("")+r[0]+'</h3><p>'+r[2]+'</p></div>';
+    h+='<div style="margin-top:12px"><h3>'+r[1].map(dot).join("")+r[0]+'</h3><p>'+r[2]+'</p></div>';
   });
   $("rules").innerHTML=h;
   $("leg").innerHTML=LEG.map(function(x){return'<span>'+dot(x[0])+x[1]+'</span>'}).join("");
@@ -653,6 +692,11 @@ $("dlC").onclick=function(){$("dl").close()};
 function setFs(d){SET.fs=Math.max(1.3,Math.min(3.2,Math.round((SET.fs+d)*100)/100));document.documentElement.style.setProperty("--fs",SET.fs+"rem");saveSet()}
 $("fm").onclick=function(){setFs(-0.15)};
 $("fp").onclick=function(){setFs(0.15)};
+$("bsmChk").checked=!!SET.bsm;
+$("bsmChk").onchange=function(){
+  SET.bsm=this.checked?1:0;saveSet();
+  loadPage(page); // перезагрузить страницу с новым режимом
+};
 MODES.forEach(function(m){opt($("md"),m[0],m[1])});
 ["qr","sp","md"].forEach(function(id){
   if(SET[id]!==undefined)$(id).value=SET[id];
