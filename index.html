@@ -5,8 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Тартил">
+<meta name="application-name" content="Тартил">
+<meta name="theme-color" content="#1d4e89">
+<meta name="description" content="Тартил — чтение Корана по страницам с проверкой вслух">
 <title>Тартил: Коран по страницам</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#f2f5f7;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d5dbe3;--accent:#1d4e89;--ok:#1b7f5c;--bad:#c0392b;--miss:#b7791f;--okbg:#dff3ea;--badbg:#fbe4e1;--missbg:#fbefd5;--pill:#cfd8e3;--fs:1.85rem;
 --c-gray:#8b95a7;--c-m1:#3b82f6;--c-m2:#6366f1;--c-m3:#1d4ed8;--c-m4:#1e1b8f;--c-q:#d11a2a;--c-g:#f07a1a;--c-i1:#9333ea;--c-i2:#db2777;--c-d1:#16a34a;--c-d2:#0d9488;--c-d3:#65a30d;--c-iq:#0ea5e9}
@@ -19,7 +27,8 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(58px + env(safe-area-inset-bottom,0px))}
 main{max-width:620px;margin:0 auto;padding:6px 10px}
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:4px 0 6px;border-bottom:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.bar{padding:4px 0 2px}
+.tools-sticky{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:4px 0 6px;margin:0 -10px;padding-left:10px;padding-right:10px;border-bottom:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .tools{display:flex;gap:4px}
 .tool{flex:1;min-width:0;height:36px;border-radius:10px;border:1px solid var(--accent);background:var(--card);color:var(--accent);font-size:1.05rem;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;transition:transform .1s,opacity .15s}
 .tool:active{transform:scale(.96)}
@@ -121,7 +130,7 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
 <body>
 <main>
 <div id="vr">
-  <div class="bar">
+  <div class="tools-sticky">
     <div class="tools">
       <button class="tool main" id="go">🎙 Начать</button>
       <button class="tool" id="pv" title="Предыдущий аят" aria-label="Предыдущий аят">⏮</button>
@@ -130,6 +139,10 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
       <button class="tool" id="lrn" title="Отметить выученное" aria-label="Отметить выученное">✓</button>
       <button class="tool" id="hd" title="Текст скрыт" aria-label="Режим текста">🙈</button>
     </div>
+    <p class="stat" id="stat" aria-live="polite"></p>
+    <p class="stat heard" id="hr" lang="ar" dir="rtl" hidden></p>
+  </div>
+  <div class="bar">
     <div class="sjrow">
       <select id="su" aria-label="Сура" title="Перейти к суре"></select>
       <select id="ju" aria-label="Джуз" title="Перейти к джузу"></select>
@@ -141,8 +154,6 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
       <button class="btn sec sm" id="tj" aria-label="Цвета тааджвида" title="Цвета тааджвида">🎨</button>
       <button class="btn sec sm" id="th" aria-label="Тема" title="Светлая / тёмная тема">🌓</button>
     </div>
-    <p class="stat" id="stat" aria-live="polite"></p>
-    <p class="stat heard" id="hr" lang="ar" dir="rtl" hidden></p>
   </div>
 
   <section class="card pl">
@@ -775,6 +786,19 @@ fetch(API+"surah").then(function(r){return r.json()}).then(function(j){
   ls("tartil_su",JSON.stringify(SU));fillSj();
 }).catch(function(){});
 loadPage(+ls("tartil_pg")||1);
+
+/* ---------- PWA: service worker (нужен для кнопки «Установить») ---------- */
+(function setupPWA(){
+  if(!("serviceWorker" in navigator))return;
+  // file:// — установить нельзя; нужен http/https
+  if(location.protocol==="file:"){
+    console.info("Тартил: для установки откройте через http:// (не file://)");
+    return;
+  }
+  navigator.serviceWorker.register("sw.js").catch(function(err){
+    console.warn("SW register failed",err);
+  });
+})();
 </script>
 </body>
 </html>
