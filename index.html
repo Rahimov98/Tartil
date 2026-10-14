@@ -1,1 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Тартил: проверка чтения Корана</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f5f7;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d5dbe3;--accent:#1d4e89;--ok:#1b7f5c;--bad:#c0392b;--miss:#b7791f;--okbg:#dff3ea;--badbg:#fbe4e1;--missbg:#fbefd5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1624;--card:#18223a;--ink:#e8edf6;--mute:#9aa6bd;--line:#2b3957;--accent:#6fa8ee;--ok:#5fd0a0;--bad:#ff8a7a;--miss:#f0c066;--okbg:#14382c;--badbg:#45211d;--missbg:#40320f}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1624;--card:#18223a;--ink:#e8edf6;--mute:#9aa6bd;--line:#2b3957;--accent:#6fa8ee;--ok:#5fd0a0;--bad:#ff8a7a;--miss:#f0c066;--okbg:#14382c;--badbg:#45211d;--missbg:#40320f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:560px;margin:0 auto;padding:16px}
+h1{font-size:1.25rem;margin:4px 0 2px}
+p.sub{margin:0 0 14px;color:var(--mute);font-size:.9rem}
+select{width:100%;height:46px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:1rem;padding:0 10px;margin-bottom:10px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+.tabs button{flex:0 0 auto;min-width:44px;height:44px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font-size:1rem;cursor:pointer;position:relative}
+.tabs button[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.tabs button.done::after{content:"";position:absolute;right:5px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:12px}
+.aya{font-family:Amiri,"Traditional Arabic","Scheherazade New",serif;font-size:2rem;line-height:2.3;direction:rtl;text-align:center;margin:0}
+.aya.res{text-align:center}
+.w{padding:0 6px;border-radius:8px;display:inline-block;line-height:1.9}
+.w.ok{background:var(--okbg);color:var(--ok)}
+.w.bad{background:var(--badbg);color:var(--bad)}
+.w.miss{background:var(--missbg);color:var(--miss);text-decoration:line-through}
+.row{display:flex;gap:8px;margin-top:12px}
+.btn{flex:1;min-height:48px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);font-size:1rem;font-weight:600;cursor:pointer}
+.btn.sec{background:transparent;color:var(--accent)}
+.btn.rec{background:var(--bad);border-color:var(--bad)}
+.btn:focus-visible,.tabs button:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.score{font-size:1.6rem;font-weight:700;margin:0}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:.85rem;color:var(--mute);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;background:var(--c)}
+.msg{color:var(--mute);font-size:.9rem;margin:8px 0 0}
+.heard{direction:rtl;font-family:Amiri,serif;font-size:1.2rem;color:var(--mute)}
+textarea{width:100%;min-height:70px;margin-top:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:10px;font:1.2rem Amiri,serif;direction:rtl}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+<h1>Проверка чтения Корана</h1>
+<p class="sub">Все 114 сур. Выберите суру и аят, нажмите «Читать» и прочитайте вслух.</p>
+<select id="sura" aria-label="Сура"></select>
+<div class="tabs" id="tabs" role="group" aria-label="Аяты"></div>
+<section class="card">
+  <p class="aya" id="aya" lang="ar"></p>
+  <p class="msg" id="tr"></p>
+  <div class="row">
+    <button class="btn sec" id="play">Слушать</button>
+    <button class="btn" id="rec">Читать</button>
+    <button class="btn sec" id="show">Показать текст</button>
+  </div>
+  <p class="msg" id="msg">Загрузка…</p>
+  <div id="manual" hidden>
+    <textarea id="txt" lang="ar" placeholder="Вставьте прочитанный текст сюда"></textarea>
+    <div class="row"><button class="btn sec" id="check">Проверить текст</button></div>
+  </div>
+</section>
+<section class="card" id="resCard" hidden aria-live="polite">
+  <p class="score" id="score"></p>
+  <p class="aya res" id="res" lang="ar"></p>
+  <div class="legend"><span style="--c:var(--ok)">верно</span><span style="--c:var(--bad)">другое слово</span><span style="--c:var(--miss)">пропущено</span></div>
+  <p class="msg">Услышано: <span class="heard" id="heard"></span></p>
+  <p class="msg">Программа сравнивает слова, а не тааджвид. Возможна и ошибка распознавания: попробуйте ещё раз.</p>
+</section>
+</main>
+<script>
+var API="https://api.alquran.cloud/v1/",sura=1,AYAT=[],TR=[],AUD=[],audio=null;
+var cur=0,hidden=false,done={},listening=false,rec=null;
+var $=function(i){return document.getElementById(i)};
+function dk(i){return sura+":"+i}
+try{done=JSON.parse(localStorage.getItem("tartil_done")||"{}")}catch(e){done={}}
 
+function norm(s){
+  return s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g,"")
+    .replace(/[\u0671\u0622\u0623\u0625]/g,"\u0627")
+    .replace(/\u0649/g,"\u064A").replace(/\u0629/g,"\u0647")
+    .replace(/\u0627/g,"")            // алиф опускаем: он по-разному пишется
+    .trim();
+}
+function words(s){return s.split(/\s+/).filter(Boolean)}
+function lev(a,b){
+  var m=a.length,n=b.length,d=[],i,j;
+  for(i=0;i<=m;i++){d[i]=[i]}
+  for(j=0;j<=n;j++){d[0][j]=j}
+  for(i=1;i<=m;i++)for(j=1;j<=n;j++)
+    d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  return d[m][n];
+}
+function sim(a,b){var L=Math.max(a.length,b.length);return L?1-lev(a,b)/L:1}
+
+// Выравнивание слов: возвращает статус для каждого эталонного слова
+function align(exp,got){
+  var n=exp.length,m=got.length,D=[],B=[],i,j;
+  for(i=0;i<=n;i++){D[i]=[];B[i]=[]}
+  D[0][0]=0;
+  for(i=1;i<=n;i++){D[i][0]=i;B[i][0]="d"}
+  for(j=1;j<=m;j++){D[0][j]=j;B[0][j]="i"}
+  for(i=1;i<=n;i++)for(j=1;j<=m;j++){
+    var s=sim(norm(exp[i-1]),norm(got[j-1]));
+    var c=D[i-1][j-1]+(s>=0.7?0:1),t="m";
+    if(D[i-1][j]+1<c){c=D[i-1][j]+1;t="d"}
+    if(D[i][j-1]+1<c){c=D[i][j-1]+1;t="i"}
+    D[i][j]=c;B[i][j]=t;
+  }
+  var st=new Array(n);i=n;j=m;
+  while(i>0||j>0){
+    var t2=B[i][j];
+    if(t2==="m"){
+      st[i-1]=sim(norm(exp[i-1]),norm(got[j-1]))>=0.7?"ok":"bad";i--;j--;
+    }else if(t2==="d"){st[i-1]="miss";i--}
+    else{j--}
+  }
+  return st;
+}
+
+function renderAya(){
+  $("aya").textContent=hidden?"• • • • •":(AYAT[cur]||"");
+  $("show").textContent=hidden?"Показать текст":"Скрыть текст";
+  $("tr").textContent=hidden?"":(TR[cur]||"");
+  $("resCard").hidden=true;
+}
+function renderTabs(){
+  var t=$("tabs");t.innerHTML="";
+  AYAT.forEach(function(_,i){
+    var b=document.createElement("button");
+    b.textContent=i+1;b.setAttribute("aria-pressed",i===cur);
+    b.setAttribute("aria-label","Аят "+(i+1));
+    if(done[dk(i)])b.className="done";
+    b.onclick=function(){cur=i;renderTabs();renderAya()};
+    t.appendChild(b);
+  });
+}
+function evaluate(heardText){
+  var exp=words(AYAT[cur]),got=words(heardText);
+  if(!got.length){$("msg").textContent="Ничего не услышано. Повторите.";return}
+  var st=align(exp,got),ok=0;
+  var html=exp.map(function(w,i){
+    if(st[i]==="ok")ok++;
+    return '<span class="w '+st[i]+'">'+w+'</span>';
+  }).join(" ");
+  var pct=Math.round(ok/exp.length*100);
+  $("res").innerHTML=html;
+  $("score").textContent="Точность: "+pct+"%";
+  $("heard").textContent=heardText;
+  $("resCard").hidden=false;
+  if(pct>=90){done[dk(cur)]=1;try{localStorage.setItem("tartil_done",JSON.stringify(done))}catch(e){}renderTabs()}
+  $("msg").textContent=pct>=90?"Отлично! Аят засчитан.":"Есть расхождения. Попробуйте ещё раз.";
+}
+
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SR){
+  $("manual").hidden=false;$("rec").disabled=true;
+  
+}else{
+  rec=new SR();rec.lang="ar-SA";rec.interimResults=false;rec.maxAlternatives=1;
+  rec.onresult=function(e){evaluate(e.results[0][0].transcript)};
+  rec.onerror=function(e){
+    $("msg").textContent=e.error==="not-allowed"?"Нет доступа к микрофону. Разрешите его в настройках браузера.":"Ошибка распознавания: "+e.error;
+  };
+  rec.onend=function(){listening=false;$("rec").textContent="Читать";$("rec").classList.remove("rec")};
+}
+$("rec").onclick=function(){
+  if(!rec)return;
+  if(listening){rec.stop();return}
+  try{rec.start();listening=true;$("rec").textContent="Стоп";$("rec").classList.add("rec");$("msg").textContent="Слушаю… читайте аят."}
+  catch(e){$("msg").textContent="Не удалось запустить микрофон."}
+};
+$("check").onclick=function(){evaluate($("txt").value)};
+$("show").onclick=function(){hidden=!hidden;renderAya()};
+function fail(){$("msg").textContent="Не удалось загрузить данные. Нужен интернет."}
+function loadSura(n){
+  sura=n;cur=0;$("msg").textContent="Загрузка…";
+  fetch(API+"surah/"+n+"/editions/quran-uthmani,ar.alafasy,ru.kuliev").then(function(r){return r.json()}).then(function(j){
+    AYAT=j.data[0].ayahs.map(function(x){return x.text});
+    AUD=j.data[1].ayahs.map(function(x){return x.audio});
+    TR=j.data[2].ayahs.map(function(x){return x.text});
+    if(n!==1&&n!==9){var w=words(AYAT[0]);if(norm(w[0])==="بسم")AYAT[0]=w.slice(4).join(" ")}
+    $("msg").textContent=SR?"Нужен микрофон. Нажмите «Читать».":"Распознавание речи не поддерживается. Откройте в Chrome/Edge.";
+    renderTabs();renderAya();
+  }).catch(fail);
+}
+$("sura").onchange=function(){loadSura(+this.value)};
+$("play").onclick=function(){
+  if(audio){audio.pause()}
+  if(!AUD[cur])return;
+  audio=new Audio(AUD[cur]);audio.play().catch(function(){$("msg").textContent="Не удалось воспроизвести аудио."});
+};
+fetch(API+"surah").then(function(r){return r.json()}).then(function(j){
+  j.data.forEach(function(x){
+    var o=document.createElement("option");o.value=x.number;
+    o.textContent=x.number+". "+x.englishName+" ("+x.numberOfAyahs+")";$("sura").appendChild(o);
+  });
+  loadSura(1);
+}).catch(fail);
+</script>
+</body>
+</html>
