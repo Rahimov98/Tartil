@@ -19,7 +19,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(58px + env(safe-area-inset-bottom,0px))}
 main{max-width:620px;margin:0 auto;padding:6px 10px}
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:4px 0 2px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:4px 0 6px;border-bottom:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .tools{display:flex;gap:4px}
 .tool{flex:1;min-width:0;height:36px;border-radius:10px;border:1px solid var(--accent);background:var(--card);color:var(--accent);font-size:1.05rem;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;transition:transform .1s,opacity .15s}
 .tool:active{transform:scale(.96)}
@@ -38,13 +38,13 @@ select{flex:1}
 .btn.sm{flex:0 0 38px;min-height:34px;font-size:1rem}
 .btn:disabled{opacity:.5}
 .tool:focus-visible,.btn:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.pgrow{display:flex;gap:5px;align-items:center;margin-top:5px}
+.pgrow{display:flex;gap:5px;align-items:center;margin-top:4px}
 .pgmid{flex:1;min-width:0;text-align:center;line-height:1.15}
 .pgmid input{width:72px;text-align:center;font-weight:700;height:34px}
 .pgmid small{display:block;color:var(--mute);font-size:.72rem;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sjrow{display:flex;gap:5px;margin-top:5px}
+.sjrow{display:flex;gap:5px;margin-top:4px}
 .sjrow select{font-size:.88rem;font-weight:500;height:34px}
-.stat{margin:4px 0 0;font-size:.78rem;color:var(--mute)}
+.stat{margin:3px 0 0;font-size:.78rem;color:var(--mute)}
 .stat b{color:var(--ink)}
 .heard{font-family:Amiri,serif;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:6px}
@@ -130,21 +130,19 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
       <button class="tool" id="lrn" title="Отметить выученное" aria-label="Отметить выученное">✓</button>
       <button class="tool" id="hd" title="Текст скрыт" aria-label="Режим текста">🙈</button>
     </div>
+    <div class="sjrow">
+      <select id="su" aria-label="Сура" title="Перейти к суре"></select>
+      <select id="ju" aria-label="Джуз" title="Перейти к джузу"></select>
+    </div>
+    <div class="pgrow">
+      <button class="btn sec sm" id="pp" aria-label="Предыдущая страница">◀</button>
+      <div class="pgmid"><input type="number" id="pn" min="1" max="604" inputmode="numeric" aria-label="Страница"><small id="pi"></small></div>
+      <button class="btn sec sm" id="np" aria-label="Следующая страница">▶</button>
+      <button class="btn sec sm" id="tj" aria-label="Цвета тааджвида" title="Цвета тааджвида">🎨</button>
+      <button class="btn sec sm" id="th" aria-label="Тема" title="Светлая / тёмная тема">🌓</button>
+    </div>
     <p class="stat" id="stat" aria-live="polite"></p>
     <p class="stat heard" id="hr" lang="ar" dir="rtl" hidden></p>
-  </div>
-
-  <div class="sjrow">
-    <select id="su" aria-label="Сура" title="Перейти к суре"></select>
-    <select id="ju" aria-label="Джуз" title="Перейти к джузу"></select>
-  </div>
-
-  <div class="pgrow">
-    <button class="btn sec sm" id="pp" aria-label="Предыдущая страница">◀</button>
-    <div class="pgmid"><input type="number" id="pn" min="1" max="604" inputmode="numeric" aria-label="Страница"><small id="pi"></small></div>
-    <button class="btn sec sm" id="np" aria-label="Следующая страница">▶</button>
-    <button class="btn sec sm" id="tj" aria-label="Цвета тааджвида" title="Цвета тааджвида">🎨</button>
-    <button class="btn sec sm" id="th" aria-label="Тема" title="Светлая / тёмная тема">🌓</button>
   </div>
 
   <section class="card pl">
@@ -166,7 +164,7 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
   <details class="card"><summary>Цвета тааджвида</summary><div class="leg" id="leg"></div><p class="msg">Подробные правила: вкладка «Тааджвид». Цвета видны, когда слова открыты и кнопка 🎨 включена.</p></details>
   <details class="card">
     <summary>Как пользоваться</summary>
-    <p class="msg" style="margin-top:0">🎙 Начать: читайте вслух. Слова открываются по мере верного чтения (красное — другое слово, жёлтое — пропуск). ⏮ ⏭ — аяты. ↺ — сначала. ✓ — отметить выученное. 🙈 — текст: виден / скрыт / подсказка. Нажмите на скрытое слово, чтобы подсмотреть. ▶ — аудио чтеца. Номер аята ﴿٣﴾ в тексте — проиграть его.<br><br>✨ Бисмиллях перед сурами теперь тоже проверяется (можно отключить в настройках). Экран не гаснет при чтении. Сура и джуз — сверху.</p>
+    <p class="msg" style="margin-top:0">🎙 Начать: читайте вслух непрерывно — программа идёт по всей странице (не только один аят). Слова открываются по мере чтения (зелёное — верно, красное — другое слово, жёлтое — пропуск). ⏮ ⏭ — аяты. ↺ — сначала. ✓ — выученное. 🙈 — текст виден / скрыт / подсказка. Нажмите на скрытое слово, чтобы подсмотреть. ▶ — аудио. Номер аята ﴿٣﴾ — проиграть его.<br><br>✨ Верхняя панель закреплена при прокрутке. Бисмиллях учитывается. Экран не гаснет. Распознавание смягчено под арабскую речь (короткие обрывки игнорируются, поиск вперёд по странице).</p>
   </details>
 </div>
 
@@ -225,11 +223,43 @@ document.addEventListener("visibilitychange",function(){
   if(document.visibilityState==="visible"&&(run||PL.on))requestWake();
 });
 
-function norm(s){return s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g,"").replace(/[\u0671\u0622\u0623\u0625]/g,"\u0627").replace(/\u0649/g,"\u064A").replace(/\u0629/g,"\u0647").replace(/\u0627/g,"").trim()}
-function words(s){return s.split(/\s+/).filter(Boolean)}
+function norm(s){
+  return (s||"")
+    .replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640\u200C\u200D]/g,"")
+    .replace(/[\u0671\u0622\u0623\u0625\u0627\u0670]/g,"\u0627")
+    .replace(/\u0649/g,"\u064A")
+    .replace(/\u0629/g,"\u0647")
+    .replace(/[إأآٱ]/g,"ا")
+    .replace(/ى/g,"ي")
+    .replace(/ة/g,"ه")
+    .replace(/ؤ/g,"و")
+    .replace(/ئ/g,"ي")
+    .replace(/[\u0627]/g,"") // убираем алифы для мягкого сравнения
+    .replace(/[^\u0621-\u064A\u0660-\u0669a-zA-Z0-9]/g,"")
+    .trim()
+    .toLowerCase();
+}
+function words(s){return (s||"").split(/\s+/).filter(function(w){return w&&norm(w).length>0})}
 function lev(a,b){var m=a.length,n=b.length,d=[],i,j;for(i=0;i<=m;i++)d[i]=[i];for(j=0;j<=n;j++)d[0][j]=j;
  for(i=1;i<=m;i++)for(j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n]}
-function sim(a,b){var L=Math.max(a.length,b.length);return L?1-lev(a,b)/L:1}
+function sim(a,b){
+  if(!a||!b)return 0;
+  if(a===b)return 1;
+  // короткие слова — мягче порог
+  var L=Math.max(a.length,b.length);
+  if(L<=2)return a===b?1:0.5;
+  var d=lev(a,b);
+  return 1-d/L;
+}
+function matchScore(heard,target){
+  var h=norm(heard),t=norm(target);
+  if(!h||!t)return 0;
+  if(h===t)return 1;
+  // начинается с / содержит (ASR часто режет окончания)
+  if(t.indexOf(h)===0||h.indexOf(t)===0)return 0.92;
+  if(t.length>=3&&h.length>=3&&(t.indexOf(h)>=0||h.indexOf(t)>=0))return 0.85;
+  return sim(h,t);
+}
 function msg(t){$("msg").innerHTML=t+' <span class="wake-badge'+(wakeLock?" on":"")+'" id="wake">Экран не гаснет</span>'}
 function ar(n){return String(n).replace(/\d/g,function(d){return"٠١٢٣٤٥٦٧٨٩"[d]})}
 function p2(n){return("0"+n).slice(-2)}
@@ -284,23 +314,46 @@ function seek(p){
   stat();toWord(pos);
 }
 function feed(list){
+  if(!list||!list.length||!W.length)return;
+  // возврат назад при уверенном совпадении 3 слов подряд (перечитал раньше)
   if(list.length>=3&&pos>0){
     var h0=norm(list[0]),h1=norm(list[1]),h2=norm(list[2]),near=false,j,p;
     if(h0&&h1&&h2){
-      for(j=0;j<4&&pos+j<W.length;j++){if(sim(h0,W[pos+j].n)>=0.7||sim(h1,W[pos+j].n)>=0.7){near=true;break}}
-      if(!near){for(p=pos-1;p>=Math.max(0,pos-60);p--){
-        if(p+2<W.length&&sim(h0,W[p].n)>=0.8&&sim(h1,W[p+1].n)>=0.8&&sim(h2,W[p+2].n)>=0.8){seek(p);break}
-      }}
+      for(j=0;j<6&&pos+j<W.length;j++){
+        if(matchScore(list[0],W[pos+j].n)>=0.7||matchScore(list[1],W[pos+j].n)>=0.7){near=true;break}
+      }
+      if(!near){
+        for(p=pos-1;p>=Math.max(0,pos-80);p--){
+          if(p+2<W.length&&
+             matchScore(list[0],W[p].n)>=0.8&&
+             matchScore(list[1],W[p+1].n)>=0.8&&
+             matchScore(list[2],W[p+2].n)>=0.8){seek(p);break}
+        }
+      }
     }
   }
   var old=pos;
   list.forEach(function(h){
     if(pos>=W.length)return;
-    var hn=norm(h);if(!hn)return;
-    var k=-1,j;
-    for(j=0;j<4&&pos+j<W.length;j++){if(sim(hn,W[pos+j].n)>=0.7){k=j;break}}
-    if(k<0){mark(pos,"bad");st.bad++;pos++;vib(30)}
-    else{for(j=0;j<k;j++){mark(pos,"miss");st.miss++;pos++}mark(pos,"ok");st.ok++;pos++;if(k===0)vib(12)}
+    var hn=norm(h);if(!hn||hn.length<1)return;
+    // ищем совпадение вперёд по всей оставшейся странице (не только 4 слова)
+    var bestK=-1,bestSc=0,j,sc,limit=Math.min(12,W.length-pos);
+    for(j=0;j<limit;j++){
+      if(W[pos+j].skip)continue;
+      sc=matchScore(h,W[pos+j].n);
+      // порог: короткие слова строже, длинные мягче
+      var need=W[pos+j].n.length<=2?0.85:(W[pos+j].n.length<=4?0.65:0.55);
+      if(sc>=need&&sc>bestSc){bestSc=sc;bestK=j;if(sc>=0.95)break}
+    }
+    if(bestK<0){
+      // не нашли — считаем ошибкой только если слово «похоже» на что-то рядом, иначе пропускаем шум ASR
+      var maybeNoise=hn.length<=2;
+      if(maybeNoise)return; // короткие обрывки от ASR игнорируем
+      mark(pos,"bad");st.bad++;pos++;vib(25);
+    }else{
+      for(j=0;j<bestK;j++){if(!W[pos].skip){mark(pos,"miss");st.miss++}pos++}
+      mark(pos,"ok");st.ok++;pos++;if(bestK===0)vib(10);
+    }
   });
   update(old);
 }
@@ -447,15 +500,23 @@ function ui(){var g=$("go");g.textContent=run?"■ Стоп":"🎙 Начать"
 function stopMic(){run=false;if(rec){try{rec.stop()}catch(e){}}ui();heard("");if(W[pos])view(pos);if(!PL.on)releaseWake()}
 if(SR){
   rec=new SR();rec.lang="ar-SA";rec.continuous=true;rec.interimResults=true;
+  rec.maxAlternatives=1;
   rec.onstart=function(){lastT="";requestWake()};
   rec.onresult=function(e){
-    var live="";
+    var live="",finalChunk="";
     for(var i=e.resultIndex;i<e.results.length;i++){
-      var t=e.results[i][0].transcript.trim();live=t;
+      var t=(e.results[i][0].transcript||"").trim();
+      live=t;
       if(!e.results[i].isFinal)continue;
-      var add=(lastT&&t.indexOf(lastT)===0)?t.slice(lastT.length):t;
-      lastT=t;feed(words(add));
+      // ASR часто повторяет весь накопленный текст — берём только новую часть
+      var add;
+      if(lastT&&t.indexOf(lastT)===0)add=t.slice(lastT.length).trim();
+      else if(lastT&&lastT.indexOf(t)===0)add=""; // дубликат / откат
+      else add=t;
+      lastT=t;
+      if(add)finalChunk+=(finalChunk?" ":"")+add;
     }
+    if(finalChunk)feed(words(finalChunk));
     heard(live);
   };
   rec.onend=function(){if(run){try{rec.start()}catch(e){}}};
