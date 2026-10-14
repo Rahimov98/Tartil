@@ -6,53 +6,79 @@
 <title>Тартил: Коран по страницам</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f2f5f7;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d5dbe3;--accent:#1d4e89;--ok:#1b7f5c;--bad:#c0392b;--miss:#b7791f;--okbg:#dff3ea;--badbg:#fbe4e1;--missbg:#fbefd5;--pill:#cfd8e3;--fs:1.9rem}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1624;--card:#18223a;--ink:#e8edf6;--mute:#9aa6bd;--line:#2b3957;--accent:#6fa8ee;--ok:#5fd0a0;--bad:#ff8a7a;--miss:#f0c066;--okbg:#14382c;--badbg:#45211d;--missbg:#40320f;--pill:#34445f}}
-:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1624;--card:#18223a;--ink:#e8edf6;--mute:#9aa6bd;--line:#2b3957;--accent:#6fa8ee;--ok:#5fd0a0;--bad:#ff8a7a;--miss:#f0c066;--okbg:#14382c;--badbg:#45211d;--missbg:#40320f;--pill:#34445f}
+:root{--bg:#f2f5f7;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d5dbe3;--accent:#1d4e89;--ok:#1b7f5c;--bad:#c0392b;--miss:#b7791f;--okbg:#dff3ea;--badbg:#fbe4e1;--missbg:#fbefd5;--pill:#cfd8e3;--fs:1.9rem;
+--c-gray:#8b95a7;--c-m1:#3b82f6;--c-m2:#6366f1;--c-m3:#1d4ed8;--c-m4:#1e1b8f;--c-q:#d11a2a;--c-g:#f07a1a;--c-i1:#9333ea;--c-i2:#db2777;--c-d1:#16a34a;--c-d2:#0d9488;--c-d3:#65a30d;--c-iq:#0ea5e9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1624;--card:#18223a;--ink:#e8edf6;--mute:#9aa6bd;--line:#2b3957;--accent:#6fa8ee;--ok:#5fd0a0;--bad:#ff8a7a;--miss:#f0c066;--okbg:#14382c;--badbg:#45211d;--missbg:#40320f;--pill:#34445f;
+--c-gray:#8e98ab;--c-m1:#7db0ff;--c-m2:#a5a8ff;--c-m3:#6f95ff;--c-m4:#8f8cff;--c-q:#ff7b86;--c-g:#ffb066;--c-i1:#d6a2ff;--c-i2:#ff8fc0;--c-d1:#6fe0a2;--c-d2:#5fd6cb;--c-d3:#b4e66f;--c-iq:#7dd8ff}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1624;--card:#18223a;--ink:#e8edf6;--mute:#9aa6bd;--line:#2b3957;--accent:#6fa8ee;--ok:#5fd0a0;--bad:#ff8a7a;--miss:#f0c066;--okbg:#14382c;--badbg:#45211d;--missbg:#40320f;--pill:#34445f;
+--c-gray:#8e98ab;--c-m1:#7db0ff;--c-m2:#a5a8ff;--c-m3:#6f95ff;--c-m4:#8f8cff;--c-q:#ff7b86;--c-g:#ffb066;--c-i1:#d6a2ff;--c-i2:#ff8fc0;--c-d1:#6fe0a2;--c-d2:#5fd6cb;--c-d3:#b4e66f;--c-iq:#7dd8ff}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(66px + env(safe-area-inset-bottom,0px))}
-main{max-width:620px;margin:0 auto;padding:12px}
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:6px 0 8px}
-.sel{display:flex;gap:8px}
+main{max-width:620px;margin:0 auto;padding:10px 12px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:6px 0}
+.tools{display:flex;gap:6px}
+.tool{flex:1;min-width:0;height:42px;border-radius:12px;border:1px solid var(--accent);background:var(--card);color:var(--accent);font-size:1.15rem;cursor:pointer;padding:0}
+.tool.main{flex:2.6;background:var(--accent);color:var(--bg);font-size:.95rem;font-weight:600}
+.tool.main.stop{background:var(--bad);border-color:var(--bad);color:#fff}
+.tool:disabled{opacity:.5}
 select,input[type=number]{min-width:0;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:1rem;padding:0 8px}
 select{flex:1}
+.sel{display:flex;gap:8px;margin-top:8px}
 .row{display:flex;gap:8px;margin-top:8px}
 .btn{flex:1;min-height:40px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);font-size:.95rem;font-weight:600;cursor:pointer;padding:0 6px}
 .btn.sec{background:var(--card);color:var(--accent)}
+.btn.on{background:var(--accent);color:var(--bg)}
 .btn.stop{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn.sm{flex:0 0 46px}
 .btn:disabled{opacity:.5}
-.btn:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.pgrow{display:flex;gap:8px;align-items:center}
-.pgrow .btn{flex:0 0 48px}
-.pgmid{flex:1;text-align:center;line-height:1.2}
+.tool:focus-visible,.btn:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pgrow{display:flex;gap:8px;align-items:center;margin-top:6px}
+.pgmid{flex:1;min-width:0;text-align:center;line-height:1.2}
 .pgmid input{width:84px;text-align:center;font-weight:700}
-.pgmid small{display:block;color:var(--mute);font-size:.78rem;margin-top:2px}
-.stat{margin:8px 0 0;font-size:.85rem;color:var(--mute)}
+.pgmid small{display:block;color:var(--mute);font-size:.78rem;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat{margin:6px 0 0;font-size:.82rem;color:var(--mute)}
 .stat b{color:var(--ink)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:8px}
+.heard{font-family:Amiri,serif;font-size:1.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:8px}
 .card summary{font-weight:600;cursor:pointer}
 .card summary+*{margin-top:10px}
-#tc{border:3px double var(--accent);border-radius:10px}
+.pl{display:flex;gap:8px;align-items:center}
+.pl .btn{flex:0 0 48px}
+#tc{border:3px double var(--accent);border-radius:10px;padding:14px}
 #text{font-family:Amiri,"Traditional Arabic","Scheherazade New",serif;font-size:var(--fs);line-height:2.5;direction:rtl;text-align:justify}
 .sh{display:block;text-align:center;border:2px solid var(--accent);border-radius:10px;padding:0 8px;margin:8px 0;color:var(--accent);font-size:1.3rem;line-height:2.1}
 .bsm{display:block;text-align:center;margin:2px 0;line-height:2.2}
 .w{padding:0 3px;border-radius:7px;cursor:pointer}
+.w i{font-style:normal}
 .w u{text-decoration:none}
 .w.hid{background:var(--pill);color:transparent;user-select:none}
-.w.hid.hint u{color:var(--ink)}
+.w.hid:not(.peek) i{color:transparent!important}
+.w.hid.hint:not(.peek) u i{color:var(--ink)!important}
 .w.hid.peek{background:none;color:inherit}
-.w.hid.peek u{color:inherit}
 .w.ok{background:var(--okbg);color:var(--ok)}
 .w.bad{background:var(--badbg);color:var(--bad)}
 .w.miss{background:var(--missbg);color:var(--miss)}
+.w.bad i,.w.miss i{color:inherit!important}
 .w.skip{opacity:.45}
 .w.cur{box-shadow:0 3px 0 var(--accent)}
 .w.now{outline:2px solid var(--accent);outline-offset:1px}
 .num{color:var(--accent);font-size:1.2rem;padding:0 2px;cursor:pointer}
 .num.lrn{color:var(--ok);font-weight:700}
+.t-ham_wasl,.t-slnt,.t-laam_shamsiyah{--tc:var(--c-gray)}
+.t-madda_normal{--tc:var(--c-m1)}.t-madda_permissible{--tc:var(--c-m2)}.t-madda_obligatory{--tc:var(--c-m3)}.t-madda_necessary{--tc:var(--c-m4)}
+.t-qalaqah{--tc:var(--c-q)}.t-ghunnah{--tc:var(--c-g)}
+.t-ikhfa{--tc:var(--c-i1)}.t-ikhfa_shafawi{--tc:var(--c-i2)}
+.t-idgham_ghunnah,.t-idgham_shafawi{--tc:var(--c-d1)}.t-idgham_wo_ghunnah{--tc:var(--c-d2)}.t-idgham_mutajanisayn,.t-idgham_mutaqaribayn{--tc:var(--c-d3)}
+.t-iqlab{--tc:var(--c-iq)}
+.tj i[class^="t-"]{color:var(--tc)}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--tc);margin-right:6px;vertical-align:-1px}
+.leg{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:.85rem}
 .msg{color:var(--mute);font-size:.85rem;margin:8px 0 0}
+.rules h3{font-size:1rem;margin:0 0 6px}
+.rules p{margin:4px 0;font-size:.92rem}
+.ar{font-family:Amiri,serif;font-size:1.15rem;direction:rtl;unicode-bidi:isolate}
 .nav{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);z-index:9}
-.nav button{flex:1;min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:1rem;font-weight:600;cursor:pointer}
+.nav button{flex:1;min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:.95rem;font-weight:600;cursor:pointer}
 .nav button[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
 .nav button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);width:calc(100% - 32px);max-width:420px;padding:16px}
@@ -66,9 +92,10 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
 .chart div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:.75rem;color:var(--mute)}
 .chart i{display:block;width:100%;background:var(--accent);border-radius:5px 5px 0 0;min-height:2px}
 .chart i.z{background:var(--pill)}
-.rowb{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:10px 0;color:var(--ink);font:inherit;cursor:pointer}
+.rowb{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:8px 0;color:var(--ink);font:inherit;cursor:pointer}
 .rowb:first-of-type{border-top:0}
 .rowb .t{display:flex;justify-content:space-between;gap:8px}
+.rowb .pb{margin:4px 0 0}
 .tag{font-size:.75rem;padding:1px 8px;border-radius:8px;background:var(--missbg);color:var(--miss)}
 .tag.ok{background:var(--okbg);color:var(--ok)}
 .kv{display:flex;gap:16px;flex-wrap:wrap;color:var(--mute);font-size:.9rem}
@@ -78,71 +105,83 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
 <body>
 <main>
 <div id="vr">
-<div class="bar">
+  <div class="bar">
+    <div class="tools">
+      <button class="tool main" id="go">🎙 Начать</button>
+      <button class="tool" id="pv" title="Предыдущий аят" aria-label="Предыдущий аят">⏮</button>
+      <button class="tool" id="nx" title="Следующий аят" aria-label="Следующий аят">⏭</button>
+      <button class="tool" id="rs" title="Сначала" aria-label="Сначала">↺</button>
+      <button class="tool" id="lrn" title="Отметить выученное" aria-label="Отметить выученное">✓</button>
+      <button class="tool" id="hd" title="Текст скрыт" aria-label="Режим текста">🙈</button>
+    </div>
+    <p class="stat" id="stat" aria-live="polite"></p>
+    <p class="stat heard" id="hr" lang="ar" dir="rtl" hidden></p>
+  </div>
+
   <div class="pgrow">
-    <button class="btn sec" id="pp" aria-label="Предыдущая страница">◀</button>
+    <button class="btn sec sm" id="pp" aria-label="Предыдущая страница">◀</button>
     <div class="pgmid"><input type="number" id="pn" min="1" max="604" inputmode="numeric" aria-label="Страница"><small id="pi"></small></div>
-    <button class="btn sec" id="np" aria-label="Следующая страница">▶</button>
+    <button class="btn sec sm" id="np" aria-label="Следующая страница">▶</button>
+    <button class="btn sec sm" id="tj" aria-label="Цвета тааджвида" title="Цвета тааджвида">🎨</button>
   </div>
-  <div class="row">
-    <button class="btn" id="go">Начать</button>
-    <button class="btn sec" id="lrn">✓ Выучил</button>
-    <button class="btn sec" id="hd">Текст: скрыт</button>
-  </div>
-  <div class="row">
-    <button class="btn sec" id="pv">◀ Пред. аят</button>
-    <button class="btn sec" id="nx">След. аят ▶</button>
-    <button class="btn sec" id="rs">Сначала</button>
-  </div>
-  <p class="stat" id="stat" aria-live="polite"></p>
+
+  <section class="card pl">
+    <button class="btn" id="pl" aria-label="Слушать чтеца">▶</button>
+    <select id="qr" aria-label="Чтец"><option value="yasser">Ясир ад-Даусари</option><option value="husary">Аль-Хусари</option></select>
+    <select id="md" aria-label="Режим прослушивания"></select>
+  </section>
+
+  <section class="card" id="tc"><div id="text" lang="ar"></div></section>
+  <div class="row"><button class="btn sec" id="pp2">◀ Пред. страница</button><button class="btn sec" id="np2">След. страница ▶</button></div>
+  <p class="msg" id="msg">Загрузка…</p>
+
+  <details class="card">
+    <summary>Перейти, скорость, размер текста</summary>
+    <div class="sel" style="margin-top:0"><select id="su" aria-label="Сура"></select><select id="ju" aria-label="Джуз"></select></div>
+    <div class="sel"><select id="ay" aria-label="Начать с аята"></select><select id="sp" aria-label="Скорость аудио"><option value="0.75">Аудио 0.75×</option><option value="1">Аудио 1×</option><option value="1.25">Аудио 1.25×</option></select></div>
+    <div class="row"><button class="btn sec" id="fm" aria-label="Уменьшить текст">A−</button><button class="btn sec" id="fp" aria-label="Увеличить текст">A+</button></div>
+  </details>
+  <details class="card"><summary>Цвета тааджвида</summary><div class="leg" id="leg"></div><p class="msg">Подробные правила: вкладка «Тааджвид». Цвета видны, когда слова открыты и кнопка 🎨 включена.</p></details>
+  <details class="card">
+    <summary>Как пользоваться</summary>
+    <p class="msg" style="margin-top:0">🎙 Начать: читайте вслух, слова открываются по мере верного чтения (красное: другое слово, жёлтое: пропущено). ⏮ ⏭: предыдущий и следующий аят. ↺: сначала. ✓: отметить выученное. Последняя кнопка переключает текст: виден, скрыт, подсказка (первая буква). Нажмите на скрытое слово, чтобы подсмотреть. ▶ возле чтеца: «Стр.» играет всю страницу подряд, «×3» повторяет каждый аят 3 раза, «Аят» играет один аят. Нажатие на номер аята ﴿٣﴾ в тексте проигрывает его. Проверяются слова, а не качество тааджвида. Разбивка на строки не совпадает с печатным мусхафом.</p>
+  </details>
 </div>
 
-<details class="card">
-  <summary>Перейти, начать с аята, размер текста</summary>
-  <div class="sel"><select id="su" aria-label="Сура"></select><select id="ju" aria-label="Джуз"></select></div>
-  <div class="sel" style="margin-top:8px"><select id="ay" aria-label="Начать с аята"></select>
-    <button class="btn sec" id="fm" aria-label="Уменьшить текст">A−</button><button class="btn sec" id="fp" aria-label="Увеличить текст">A+</button></div>
-</details>
-
-<section class="card">
-  <div class="sel"><select id="qr" aria-label="Чтец"><option value="yasser">Ясир ад-Даусари</option><option value="husary">Махмуд аль-Хусари</option></select>
-    <select id="sp" aria-label="Скорость"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option></select></div>
-  <div class="sel" style="margin-top:8px"><select id="rp" aria-label="Повтор"><option value="1">Без повтора</option><option value="3">Повтор ×3</option><option value="5">Повтор ×5</option><option value="10">Повтор ×10</option><option value="0">Повтор ∞</option></select>
-    <select id="md" aria-label="Что играть"><option value="ay">Только аят</option><option value="page">Вся страница</option></select></div>
-  <div class="row"><button class="btn" id="pl">▶ Слушать</button></div>
-  <p class="msg">Нажмите на номер аята ﴿٣﴾ в тексте, чтобы послушать именно его.</p>
-</section>
-
-<section class="card" id="tc"><div id="text" lang="ar"></div></section>
-<p class="msg" id="msg">Загрузка…</p>
-<p class="msg">Читайте вслух: слова открываются по мере верного чтения. Красное: другое слово, жёлтое: пропущено. «Текст» переключает режимы: скрыт, подсказка (первая буква), виден. Нажмите на скрытое слово, чтобы подсмотреть. Чтобы перечитать предыдущий аят, начните читать его заново или нажмите «Пред. аят». Проверяются слова, не тааджвид. Разбивка на страницы приблизительная: число строк может отличаться от печатного Корана.</p>
+<div id="vt" hidden>
+  <div class="card rules" id="rules"></div>
 </div>
 <div id="vs" hidden></div>
 </main>
 <nav class="nav" aria-label="Разделы">
   <button id="n1" aria-pressed="true">Чтение</button>
-  <button id="n2" aria-pressed="false">Статистика</button>
+  <button id="n2" aria-pressed="false">Тааджвид</button>
+  <button id="n3" aria-pressed="false">Статистика</button>
 </nav>
 <dialog id="dl" aria-labelledby="dlt">
   <h2 id="dlt" style="font-size:1.1rem;margin:0 0 6px">Отметить выученное</h2>
-  <p class="msg" id="dls" style="margin:0 0 10px"></p>
+  <p class="msg" id="dls" style="margin:0 0 6px"></p>
+  <div class="sel" style="margin-top:0"><select id="ds" aria-label="Сура"></select></div>
   <div class="sel"><select id="df" aria-label="С аята"></select><select id="dt" aria-label="По аят"></select></div>
-  <div class="row"><button class="btn sec" id="dw">Вся страница</button></div>
+  <div class="row"><button class="btn sec" id="dw">Вся сура</button><button class="btn sec" id="dp">Вся страница</button></div>
   <div class="row"><button class="btn" id="dlL">Выучил</button><button class="btn sec" id="dlR">Повторил</button></div>
   <div class="row"><button class="btn sec" id="dlU">Снять отметку</button><button class="btn sec" id="dlC">Отмена</button></div>
 </dialog>
 <script>
-var API="https://api.alquran.cloud/v1/",page=1,W=[],AYL=[],NUM=[],pos=0,run=false,hide=1,st={ok:0,bad:0,miss:0},audio=null,lastT="";
-var TOTAL=6236,SU=[],DB={L:{},goal:5,pg:{}},SET={qr:"yasser",sp:"1",rp:"1",md:"ay",fs:1.9},PL={on:false,g:0,rep:0,k:0};
+var API="https://api.alquran.cloud/v1/",TJAPI="https://api.quran.com/api/v4/quran/verses/uthmani_tajweed?page_number=";
+var page=1,W=[],AYL=[],NUM=[],pos=0,run=false,hide=1,st={ok:0,bad:0,miss:0},audio=null,lastT="",INFO="",HASTJ=false,DM="range";
+var TOTAL=6236,SU=[],DB={L:{},goal:5,pg:{}},SET={qr:"yasser",sp:"1",md:"page:1",fs:1.9,tj:1},PL={on:false,g:0,rep:0,k:0};
 var BSM="بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ";
 var QR={yasser:["Yasser_Ad-Dussary_128kbps"],husary:["Husary_128kbps","Husary_64kbps"]};
+var MODES=[["page:1","Стр. ×1"],["page:3","Стр. ×3"],["page:5","Стр. ×5"],["loop:1","Стр. по кругу"],["ay:1","Аят ×1"],["ay:3","Аят ×3"],["ay:5","Аят ×5"],["ay:0","Аят ∞"]];
+var LEG=[["ham_wasl","Хамзат уасль"],["slnt","Немая буква"],["laam_shamsiyah","Лям шамсия"],["madda_normal","Мадд обычный (2)"],["madda_permissible","Мадд допустимый (2/4/6)"],["madda_obligatory","Мадд обязательный (4–5)"],["madda_necessary","Мадд необходимый (6)"],["qalaqah","Калькаля"],["ghunnah","Гунна"],["ikhfa","Ихфа"],["ikhfa_shafawi","Ихфа шафави"],["idgham_ghunnah","Идгам с гунной"],["idgham_wo_ghunnah","Идгам без гунны"],["idgham_shafawi","Идгам шафави"],["idgham_mutajanisayn","Идгам мутаджанисайн"],["idgham_mutaqaribayn","Идгам мутакарибайн"],["iqlab","Икляб"]];
 var $=function(i){return document.getElementById(i)};
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
 try{var raw=JSON.parse(ls("tartil_v2")||"null");if(raw&&raw.L){DB=raw;if(!DB.pg)DB.pg={}}}catch(e){}
 try{SU=JSON.parse(ls("tartil_su")||"[]")}catch(e){SU=[]}
-try{var sv=JSON.parse(ls("tartil_set")||"null");if(sv)for(var q in sv)SET[q]=sv[q]}catch(e){}
+try{var sv=JSON.parse(ls("tartil_set2")||"null");if(sv)for(var q in sv)SET[q]=sv[q]}catch(e){}
 function save(){ls("tartil_v2",JSON.stringify(DB))}
-function saveSet(){ls("tartil_set",JSON.stringify(SET))}
+function saveSet(){ls("tartil_set2",JSON.stringify(SET))}
 
 function norm(s){return s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g,"").replace(/[\u0671\u0622\u0623\u0625]/g,"\u0627").replace(/\u0649/g,"\u064A").replace(/\u0629/g,"\u0647").replace(/\u0627/g,"").trim()}
 function words(s){return s.split(/\s+/).filter(Boolean)}
@@ -159,6 +198,7 @@ function addDays(ds,k){var d=new Date(ds+"T12:00:00");d.setDate(d.getDate()+k);r
 function diff(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)}
 function suName(n){return SU[n-1]?SU[n-1].e:"Сура "+n}
 function mk(tag,cls){var e=document.createElement(tag);if(cls)e.className=cls;return e}
+function opt(sel,v,t){var o=mk("option");o.value=v;o.textContent=t;sel.appendChild(o)}
 
 /* ---------- отображение ---------- */
 function view(i){
@@ -175,17 +215,19 @@ function markNums(){NUM.forEach(function(m,g){m.className="num"+(DB.L[AYL[g].k]?
 function stat(){
   var n=st.ok+st.bad+st.miss,p=n?Math.round(st.ok/n*100):0,lc=0;
   AYL.forEach(function(a){if(DB.L[a.k])lc++});
-  $("stat").innerHTML="Верно <b>"+st.ok+"</b> · ошибок <b>"+st.bad+"</b> · пропущено <b>"+st.miss+"</b> · точность <b>"+p+"%</b> · слово "+Math.min(pos+1,W.length)+"/"+W.length+" · выучено аятов <b>"+lc+"/"+AYL.length+"</b>";
+  $("stat").innerHTML="Верно <b>"+st.ok+"</b> · ошибок <b>"+st.bad+"</b> · пропуск <b>"+st.miss+"</b> · <b>"+p+"%</b> · слово "+Math.min(pos+1,W.length)+"/"+W.length;
+  $("pi").textContent=INFO+" · выучено "+lc+"/"+AYL.length;
 }
 function toWord(i){if(W[i])W[i].el.scrollIntoView({block:"center",behavior:"smooth"})}
+function heard(t){var h=$("hr"),a=words(t||"");h.hidden=!a.length;h.textContent=a.slice(-10).join(" ")}
 function update(old){
   for(var i=Math.max(0,old-1);i<=Math.min(W.length-1,pos);i++)view(i);
   stat();toWord(pos);
   if(pos>=W.length&&run){
-    stop();
+    stopMic();
     var n=Math.max(1,st.ok+st.bad+st.miss),p=Math.round(st.ok/n*100),b=DB.pg[page];
     if(!b||p>b.b)DB.pg[page]={b:p,d:today()};save();
-    msg("Страница завершена! Точность: "+p+"%. Нажмите «✓ Выучил» или откройте следующую страницу ▶.");
+    msg("Страница завершена! Точность: "+p+"%. Нажмите ✓, чтобы отметить выученное, или откройте следующую страницу.");
   }
 }
 function mark(i,s){W[i].s=s}
@@ -198,12 +240,13 @@ function seek(p){
   stat();toWord(pos);
 }
 function feed(list){
-  if(list.length>=2&&pos>0){
-    var h0=norm(list[0]),h1=norm(list[1]),near=false,j,p;
-    if(h0&&h1){
-      for(j=0;j<4&&pos+j<W.length;j++){if(sim(h0,W[pos+j].n)>=0.7){near=true;break}}
-      if(!near){for(p=pos-1;p>=Math.max(0,pos-120);p--){
-        if(p+1<W.length&&sim(h0,W[p].n)>=0.7&&sim(h1,W[p+1].n)>=0.7){seek(p);break}
+  // возврат назад только при уверенном совпадении трёх слов подряд
+  if(list.length>=3&&pos>0){
+    var h0=norm(list[0]),h1=norm(list[1]),h2=norm(list[2]),near=false,j,p;
+    if(h0&&h1&&h2){
+      for(j=0;j<4&&pos+j<W.length;j++){if(sim(h0,W[pos+j].n)>=0.7||sim(h1,W[pos+j].n)>=0.7){near=true;break}}
+      if(!near){for(p=pos-1;p>=Math.max(0,pos-60);p--){
+        if(p+2<W.length&&sim(h0,W[p].n)>=0.8&&sim(h1,W[p+1].n)>=0.8&&sim(h2,W[p+2].n)>=0.8){seek(p);break}
       }}
     }
   }
@@ -232,61 +275,105 @@ function go(d){
   seek(AYL[g].w0);
 }
 
+/* ---------- слова с разметкой тааджвида ---------- */
+function isMark(c){return/[\u064B-\u065F\u0670\u06D6-\u06ED]/.test(c)}
+function parseTj(s){
+  var out=[],re=/<tajweed class=([a-z_]+)>([^<]*)<\/tajweed>|<span class=end>[^<]*<\/span>|<[^>]+>|([^<]+)/g,m,i;
+  while((m=re.exec(s))){
+    if(m[1]){for(i=0;i<m[2].length;i++)out.push({c:m[2][i],k:m[1]})}
+    else if(m[3]){for(i=0;i<m[3].length;i++)out.push({c:m[3][i],k:""})}
+  }
+  return out;
+}
+function plainChars(s){var o=[];for(var i=0;i<s.length;i++)o.push({c:s[i],k:""});return o}
+function splitWords(ch){
+  var out=[],cur=[];
+  ch.forEach(function(x){
+    if(/\s/.test(x.c)){if(cur.length)out.push(cur);cur=[]}else cur.push(x);
+  });
+  if(cur.length)out.push(cur);
+  return out;
+}
+function plain(ch){return ch.map(function(x){return x.c}).join("")}
+function grp(ch,parent){
+  var cur=null,ck=null;
+  ch.forEach(function(x){
+    if(!cur||x.k!==ck){cur=mk("i",x.k?"t-"+x.k:"");parent.appendChild(cur);ck=x.k}
+    cur.textContent+=x.c;
+  });
+}
+function buildWord(ch){
+  var s=mk("span","w"),k=0,u=mk("u");
+  if(/[\u0627\u0671]/.test(ch[0].c)&&ch[1]&&ch[1].c==="\u0644"){k=2;while(k<ch.length&&isMark(ch[k].c))k++}
+  if(k<ch.length){k++;while(k<ch.length&&isMark(ch[k].c))k++}
+  grp(ch.slice(0,k),u);s.appendChild(u);grp(ch.slice(k),s);
+  return s;
+}
+
 /* ---------- загрузка страницы ---------- */
 function fail(){msg("Не удалось загрузить данные. Нужен интернет.")}
 function loadPage(p){
   p=Math.max(1,Math.min(604,Math.round(+p)||1));
   stopAll();msg("Загрузка…");
-  fetch(API+"page/"+p+"/quran-uthmani").then(function(r){return r.json()}).then(function(j){
-    var ays=j.data.ayahs,box=$("text"),ay=$("ay"),names=[];
+  var A=fetch(API+"page/"+p+"/quran-uthmani").then(function(r){return r.json()});
+  var B=fetch(TJAPI+p).then(function(r){return r.ok?r.json():null}).catch(function(){return null});
+  Promise.all([A,B]).then(function(res){
+    var ays=res[0].data.ayahs,TJ={},box=$("text"),ay=$("ay"),names=[];
+    if(res[1]&&res[1].verses)res[1].verses.forEach(function(v){if(v.verse_key&&v.text_uthmani_tajweed)TJ[v.verse_key]=v.text_uthmani_tajweed});
+    HASTJ=Object.keys(TJ).length>0;
     page=p;ls("tartil_pg",p);$("pn").value=p;
     W=[];AYL=[];NUM=[];box.innerHTML="";ay.innerHTML="";
     ays.forEach(function(x,g){
-      var sn=x.surah.number,an=x.numberInSurah;
+      var sn=x.surah.number,an=x.numberInSurah,key=sn+":"+an;
       if(names.indexOf(x.surah.englishName)<0)names.push(x.surah.englishName);
       if(an===1){
         var h=mk("div","sh");h.textContent=x.surah.name;box.appendChild(h);
         if(sn!==1&&sn!==9){var b=mk("div","bsm");b.textContent=BSM;box.appendChild(b)}
       }
-      var ws=words(x.text);
-      if(an===1&&sn!==1&&sn!==9&&norm(ws[0])==="بسم")ws=ws.slice(4);
+      var ws=splitWords(TJ[key]?parseTj(TJ[key]):plainChars(x.text));
+      if(an===1&&sn!==1&&sn!==9&&ws.length&&norm(plain(ws[0]))==="بسم")ws=ws.slice(4);
       var w0=W.length;
-      ws.forEach(function(t){
-        var s=mk("span","w"),u=mk("u"),m=t.match(/^([\s\S][\u064B-\u065F\u0670\u06D6-\u06ED]*)([\s\S]*)$/),o={n:norm(t),g:g,el:s,s:"",peek:false,skip:false};
-        u.textContent=m?m[1]:t;s.appendChild(u);if(m&&m[2])s.appendChild(document.createTextNode(m[2]));
+      ws.forEach(function(ch){
+        var s=buildWord(ch),o={n:norm(plain(ch)),g:g,el:s,s:"",peek:false,skip:false};
         s.onclick=function(){if(!o.s){o.peek=!o.peek;view(W.indexOf(o))}};
         W.push(o);box.appendChild(s);box.appendChild(document.createTextNode(" "));
       });
       var nm=mk("span","num");nm.textContent="\uFD3F"+ar(an)+"\uFD3E";
       nm.onclick=function(){stopMic();PL.rep=0;playG(g,0)};
       NUM.push(nm);box.appendChild(nm);box.appendChild(document.createTextNode(" "));
-      AYL.push({s:sn,a:an,k:sn+":"+an,w0:w0,w1:W.length-1});
-      var op=mk("option");op.value=g;op.textContent=sn+":"+an;ay.appendChild(op);
+      AYL.push({s:sn,a:an,k:key,w0:w0,w1:W.length-1});
+      opt(ay,g,sn+":"+an);
     });
-    $("pi").textContent="Джуз "+ays[0].juz+" · "+names.join(", ");
-    markNums();reset();window.scrollTo(0,0);
+    INFO="Джуз "+ays[0].juz+" · "+names.join(", ");
+    applyTj();markNums();reset();window.scrollTo(0,0);
+    if(!HASTJ)msg("Цвета тааджвида сейчас недоступны (нет данных). Чтение работает как обычно.");
   }).catch(fail);
 }
 function gotoSura(n){
   msg("Загрузка…");
   fetch(API+"ayah/"+n+":1").then(function(r){return r.json()}).then(function(j){loadPage(j.data.page)}).catch(fail);
 }
+function applyTj(){
+  $("text").classList.toggle("tj",!!SET.tj&&HASTJ);
+  var b=$("tj");b.classList.toggle("on",!!SET.tj);b.setAttribute("aria-pressed",!!SET.tj);
+}
 
 /* ---------- распознавание речи ---------- */
 var SR=window.SpeechRecognition||window.webkitSpeechRecognition,rec=null;
-function ui(){var g=$("go");g.textContent=run?"Стоп":"Начать";g.className="btn"+(run?" stop":"")}
-function stopMic(){run=false;if(rec){try{rec.stop()}catch(e){}}ui();if(W[pos])view(pos)}
-function stop(){stopMic()}
+function ui(){var g=$("go");g.textContent=run?"■ Стоп":"🎙 Начать";g.className="tool main"+(run?" stop":"")}
+function stopMic(){run=false;if(rec){try{rec.stop()}catch(e){}}ui();heard("");if(W[pos])view(pos)}
 if(SR){
-  rec=new SR();rec.lang="ar-SA";rec.continuous=true;rec.interimResults=false;
+  rec=new SR();rec.lang="ar-SA";rec.continuous=true;rec.interimResults=true;
   rec.onstart=function(){lastT=""};
   rec.onresult=function(e){
+    var live="";
     for(var i=e.resultIndex;i<e.results.length;i++){
+      var t=e.results[i][0].transcript.trim();live=t;
       if(!e.results[i].isFinal)continue;
-      var t=e.results[i][0].transcript.trim();
       var add=(lastT&&t.indexOf(lastT)===0)?t.slice(lastT.length):t;
       lastT=t;feed(words(add));
     }
+    heard(live);
   };
   rec.onend=function(){if(run){try{rec.start()}catch(e){}}};
   rec.onerror=function(e){
@@ -299,7 +386,7 @@ if(SR){
 function stopAudio(){
   var g=PL.g;PL.on=false;
   if(audio){audio.onended=null;audio.onerror=null;audio.pause()}
-  $("pl").textContent="▶ Слушать";$("pl").className="btn";viewG(g);
+  $("pl").textContent="▶";$("pl").className="btn";viewG(g);
 }
 function stopAll(){stopMic();stopAudio()}
 function playG(g,k){
@@ -307,7 +394,7 @@ function playG(g,k){
   var old=PL.g,f=QR[SET.qr];
   if(audio){audio.onended=null;audio.onerror=null;audio.pause()}
   PL.g=g;PL.k=k;PL.on=true;viewG(old);viewG(g);
-  $("pl").textContent="■ Стоп";$("pl").className="btn stop";
+  $("pl").textContent="■";$("pl").className="btn stop";
   toWord(AYL[g].w0);
   var a=AYL[g],au=new Audio("https://everyayah.com/data/"+f[k]+"/"+p3(a.s)+p3(a.a)+".mp3");
   audio=au;au.playbackRate=+SET.sp||1;
@@ -315,9 +402,11 @@ function playG(g,k){
     if(k+1<f.length)playG(g,k+1);else{stopAudio();msg("Аудио этого чтеца для аята не найдено.")}
   };
   au.onended=function(){
-    PL.rep++;var R=+SET.rp;
+    var m=SET.md.split(":"),md=m[0],R=+m[1];
+    PL.rep++;
     if(R===0||PL.rep<R){setTimeout(function(){if(PL.on&&audio===au)playG(g,PL.k)},600)}
-    else if(SET.md==="page"&&g+1<AYL.length){PL.rep=0;setTimeout(function(){if(PL.on&&audio===au)playG(g+1,PL.k)},400)}
+    else if((md==="page"||md==="loop")&&g+1<AYL.length){PL.rep=0;setTimeout(function(){if(PL.on&&audio===au)playG(g+1,PL.k)},400)}
+    else if(md==="loop"){PL.rep=0;setTimeout(function(){if(PL.on&&audio===au)playG(0,PL.k)},800)}
     else stopAudio();
   };
   au.play().catch(function(){});
@@ -326,30 +415,42 @@ $("pl").onclick=function(){
   if(PL.on){stopAudio();return}
   if(!W.length)return;
   stopMic();PL.rep=0;
-  playG(W[Math.min(pos,W.length-1)].g,0);
+  var m=SET.md.split(":")[0];
+  playG(m==="ay"?W[Math.min(pos,W.length-1)].g:(pos>0&&pos<W.length?W[pos].g:0),0);
 };
 
 /* ---------- «Выучил» ---------- */
+function cnt(s){
+  if(SU[s-1])return SU[s-1].c;
+  var m=0;AYL.forEach(function(a){if(a.s===s&&a.a>m)m=a.a});return m;
+}
+function fillAy(){
+  var c=cnt(+$("ds").value);
+  ["df","dt"].forEach(function(id){var el=$(id);el.innerHTML="";for(var k=1;k<=c;k++)opt(el,k,"Аят "+k)});
+}
+function dlsText(){$("dls").textContent=DM==="page"?"Будет применено ко всей странице "+page+".":"Выберите суру и аяты."}
 function openDlg(){
   if(!AYL.length)return;
-  var f=+$("ay").value||0,t=pos>AYL[f].w0?W[Math.min(pos,W.length)-1].g:f;
-  ["df","dt"].forEach(function(id){
-    var el=$(id);el.innerHTML="";
-    AYL.forEach(function(a,g){var o=mk("option");o.value=g;o.textContent=suName(a.s)+" "+a.a;el.appendChild(o)});
-  });
-  $("df").value=f;$("dt").value=Math.max(f,t);
-  $("dls").textContent="Страница "+page+": выберите аяты.";
+  var g0=+$("ay").value||0,a0=AYL[g0],g1=pos>a0.w0?W[Math.min(pos,W.length)-1].g:g0,a1=AYL[g1],ds=$("ds");
+  ds.innerHTML="";
+  if(SU.length)SU.forEach(function(x){opt(ds,x.n,x.n+". "+x.e)});
+  else{var seen={};AYL.forEach(function(a){if(!seen[a.s]){seen[a.s]=1;opt(ds,a.s,"Сура "+a.s)}})}
+  ds.value=a0.s;fillAy();
+  $("df").value=a0.a;
+  var same=a1.s===a0.s;
+  $("dt").value=same?a1.a:cnt(a0.s);
+  DM=same?"range":"page";dlsText();
   $("dl").showModal();
 }
 function applyRange(mode){
-  var f=+$("df").value,t=+$("dt").value,c=0,g,k,x;
-  if(f>t){x=f;f=t;t=x}
-  for(g=f;g<=t;g++){
-    k=AYL[g].k;
+  var keys=[],f=+$("df").value,t=+$("dt").value,s=+$("ds").value,a,x,c=0;
+  if(DM==="page"){AYL.forEach(function(y){keys.push(y.k)})}
+  else{if(f>t){x=f;f=t;t=x}for(a=f;a<=t;a++)keys.push(s+":"+a)}
+  keys.forEach(function(k){
     if(mode==="learn"){if(!DB.L[k]){DB.L[k]={d:today(),r:today()};c++}else DB.L[k].r=today()}
     else if(mode==="rev"){if(DB.L[k]){DB.L[k].r=today();c++}}
     else if(DB.L[k]){delete DB.L[k];c++}
-  }
+  });
   save();markNums();stat();$("dl").close();
   msg(mode==="learn"?"Выучено новых аятов: "+c+".":mode==="rev"?"Повторено аятов: "+c+".":"Отметка снята с аятов: "+c+".");
 }
@@ -364,7 +465,7 @@ function streaks(days){
 }
 function bar(p,cls){return'<div class="pb '+(cls||"")+'"><i style="width:'+Math.min(100,p)+'%"></i></div>'}
 function stats(){
-  var L=DB.L,keys=Object.keys(L),cnt=keys.length,per={},oldR={},days={},t=today(),done=0,i;
+  var L=DB.L,keys=Object.keys(L),cn=keys.length,per={},oldR={},days={},t=today(),done=0,i;
   keys.forEach(function(k){
     var n=k.split(":")[0],e=L[k];
     per[n]=(per[n]||0)+1;days[e.d]=(days[e.d]||0)+1;
@@ -374,8 +475,8 @@ function stats(){
   var pk=Object.keys(DB.pg),pa=0;pk.forEach(function(k){pa+=DB.pg[k].b});
   var td=days[t]||0,goal=DB.goal||5,sk=streaks(days),sum30=0;
   for(i=0;i<30;i++)sum30+=days[addDays(t,-i)]||0;
-  var avg=sum30/30,left=TOTAL-cnt,pace="";
-  if(cnt>=TOTAL)pace="Весь Коран выучен. Машаллах!";
+  var avg=sum30/30,left=TOTAL-cn,pace="";
+  if(cn>=TOTAL)pace="Весь Коран выучен. Машаллах!";
   else if(avg>0){var dd=Math.ceil(left/avg),y=Math.floor(dd/365),m=Math.floor(dd%365/30);pace="Темп: "+avg.toFixed(1)+" аята в день. Остаток примерно "+(y?y+" г. ":"")+m+" мес."}
   else pace="Выучите несколько аятов, и здесь появится прогноз.";
   var wd=["Вс","Пн","Вт","Ср","Чт","Пт","Сб"],mx=goal,ch="",d;
@@ -384,23 +485,26 @@ function stats(){
     d=addDays(t,-i);var v=days[d]||0;
     ch+='<div title="'+d+'">'+(v||"")+'<i class="'+(v?"":"z")+'" style="height:'+Math.max(2,v/mx*80)+'px"></i>'+wd[new Date(d+"T12:00:00").getDay()]+'</div>';
   }
-  var rows="",started=Object.keys(per).map(Number).sort(function(a,b){return a-b});
-  started.forEach(function(n){
-    var c=per[n],tot=SU[n-1]?SU[n-1].c:c,due=diff(oldR[n],t)>=7;
-    rows+='<button class="rowb" data-n="'+n+'"><div class="t"><span>'+n+". "+suName(n)+(SU[n-1]?' · <span lang="ar">'+SU[n-1].a+'</span>':"")+'</span><span>'+
-      (c>=tot?'<span class="tag ok">выучена</span> ':"")+(due?'<span class="tag">повторить</span> ':"")+c+"/"+tot+'</span></div>'+bar(c/tot*100)+'</button>';
-  });
+  function row(n,showDue){
+    var c=per[n]||0,tot=SU[n-1]?SU[n-1].c:c,due=showDue&&c&&diff(oldR[n],t)>=7;
+    return'<button class="rowb" data-n="'+n+'"><div class="t"><span>'+n+". "+suName(n)+(SU[n-1]?' · <span lang="ar">'+SU[n-1].a+'</span>':"")+'</span><span>'+
+      (c&&c>=tot?'<span class="tag ok">выучена</span> ':"")+(due?'<span class="tag">повторить</span> ':"")+c+"/"+tot+'</span></div>'+bar(tot?c/tot*100:0)+'</button>';
+  }
+  var rows="",started=Object.keys(per).map(Number).sort(function(a,b){return a-b}),all="";
+  started.forEach(function(n){rows+=row(n,true)});
+  SU.forEach(function(x){all+=row(x.n,true)});
   $("vs").innerHTML=
-   '<div class="card sc"><h2>Весь Коран</h2><p class="big">'+(cnt/TOTAL*100).toFixed(2)+'%</p>'+bar(cnt/TOTAL*100)+
-   '<div class="kv"><span><b>'+cnt+'</b> из '+TOTAL+' аятов</span><span><b>'+done+'</b> из 114 сур</span></div>'+
+   '<div class="card sc"><h2>Весь Коран</h2><p class="big">'+(cn/TOTAL*100).toFixed(2)+'%</p>'+bar(cn/TOTAL*100)+
+   '<div class="kv"><span><b>'+cn+'</b> из '+TOTAL+' аятов</span><span><b>'+done+'</b> из 114 сур</span></div>'+
    '<div class="kv" style="margin-top:6px"><span><b>'+pk.length+'</b> из 604 стр. прочитано</span>'+(pk.length?'<span>средняя точность <b>'+Math.round(pa/pk.length)+'%</b></span>':"")+'</div>'+
    '<p class="msg">'+pace+'</p></div>'+
    '<div class="card sc"><h2>Сегодня</h2><div class="kv"><span><b>'+td+'</b> аят из цели <b>'+goal+'</b></span><span>Серия: <b>'+sk[0]+'</b> дн.</span><span>Рекорд: <b>'+sk[1]+'</b> дн.</span></div>'+bar(td/goal*100,"g")+
    '<p class="msg">'+(td>=goal?"Цель на сегодня выполнена!":"Осталось до цели: "+(goal-td)+".")+'</p>'+
    '<label class="msg">Цель в день, аятов: <input type="number" id="goal" min="1" max="500" value="'+goal+'" style="width:70px;height:36px"></label></div>'+
    '<div class="card sc"><h2>Последние 7 дней</h2><div class="chart">'+ch+'</div></div>'+
-   '<div class="card sc"><h2>Мои суры</h2>'+(rows||'<p class="msg" style="margin:0">Пока ничего не выучено. В разделе «Чтение» нажмите «✓ Выучил».</p>')+
-   '<p class="msg">Метка «повторить» появляется, если аяты не повторяли 7 дней и больше. Отметить повторение: «✓ Выучил» → «Повторил».</p></div>'+
+   '<div class="card sc"><h2>Мои суры</h2>'+(rows||'<p class="msg" style="margin:0">Пока ничего не выучено. В разделе «Чтение» нажмите «✓».</p>')+
+   '<p class="msg">Метка «повторить» появляется, если аяты не повторяли 7 дней и больше. Отметить повторение: ✓ → «Повторил».</p></div>'+
+   '<details class="card sc"><summary>Все 114 сур</summary>'+(all||'<p class="msg">Список сур загрузится при подключении к интернету.</p>')+'</details>'+
    '<div class="card sc"><h2>Данные</h2><div class="row"><button class="btn sec" id="ex">Сохранить копию</button><button class="btn sec" id="im">Загрузить копию</button></div>'+
    '<div class="row"><button class="btn sec" id="rz">Сбросить прогресс</button></div><input type="file" id="fi" accept=".json" hidden>'+
    '<p class="msg">Прогресс хранится в этом браузере. Сохраняйте копию, чтобы не потерять его.</p></div>';
@@ -420,37 +524,67 @@ function stats(){
   $("rz").onclick=function(){if(confirm("Удалить весь прогресс? Это нельзя отменить.")){DB={L:{},goal:DB.goal||5,pg:{}};save();stats()}};
 }
 function tab(i){
-  $("vr").hidden=i!==1;$("vs").hidden=i!==2;
-  $("n1").setAttribute("aria-pressed",i===1);$("n2").setAttribute("aria-pressed",i===2);
-  if(i===2){stopAll();stats()}else{markNums();stat()}
+  $("vr").hidden=i!==1;$("vt").hidden=i!==2;$("vs").hidden=i!==3;
+  [1,2,3].forEach(function(k){$("n"+k).setAttribute("aria-pressed",k===i)});
+  if(i!==1)stopAll();
+  if(i===3)stats();
+  if(i===1){markNums();stat()}
   window.scrollTo(0,0);
+}
+
+/* ---------- справочник по тааджвиду ---------- */
+function dot(k){return'<span class="dot t-'+k+'"></span>'}
+function renderRules(){
+  var R=[
+   ["Нун сакина и танвин",[],'<b>Изхар</b> (чёткое чтение): перед буквами горла <span class="ar">ء ه ع ح غ خ</span>.<br><b>Идгам</b> (слияние): перед <span class="ar">ي ر م ل و ن</span>. С гунной: <span class="ar">ي ن م و</span>. Без гунны: <span class="ar">ل ر</span>. Если нун и такая буква стоят в одном слове (например, <span class="ar">دُنْيَا</span>), слияния нет.<br><b>Икляб</b> (замена на «м»): перед <span class="ar">ب</span>.<br><b>Ихфа</b> (скрытие с гунной): перед остальными 15 буквами: <span class="ar">ت ث ج د ذ ز س ش ص ض ط ظ ف ق ك</span>.'],
+   ["Мим сакина",["idgham_shafawi","ikhfa_shafawi"],'<b>Идгам шафави</b>: перед <span class="ar">م</span>. <b>Ихфа шафави</b>: перед <span class="ar">ب</span>. <b>Изхар шафави</b>: перед остальными буквами.'],
+   ["Гунна",["ghunnah"],'Нун и мим с ташдидом (<span class="ar">نّ مّ</span>): носовой звук примерно 2 хараки.'],
+   ["Калькаля",["qalaqah"],'Буквы <span class="ar">ق ط ب ج د</span> с сукуном: лёгкий «отскок» звука.'],
+   ["Мадд (удлинение)",["madda_normal","madda_permissible","madda_obligatory","madda_necessary"],'Обычный: 2 хараки. Допустимый: 2, 4 или 6 (например, при остановке на конце аята). Обязательный: 4–5. Необходимый: 6.'],
+   ["Лям шамсия и хамзат уасль",["laam_shamsiyah","ham_wasl","slnt"],'Лям артикля <span class="ar">ٱل</span> не произносится перед «солнечными» буквами <span class="ar">ت ث د ذ ر ز س ش ص ض ط ظ ل ن</span>, а следующая буква читается с ташдидом. Соединительный алиф <span class="ar">ٱ</span> читается в начале слова и опускается при слитном чтении. Немые буквы пишутся, но не читаются. Всё это серого цвета.']
+  ],h='<h3 style="font-size:1.15rem">Правила тааджвида</h3><p class="msg" style="margin-top:0">Краткая памятка. Цвета в тексте подсвечивает данные Quran.com. Программа проверяет слова, а не качество тааджвида: для этого нужен учитель.</p>';
+  R.forEach(function(r){
+    h+='<div style="margin-top:14px"><h3>'+r[1].map(dot).join("")+r[0]+'</h3><p>'+r[2]+'</p></div>';
+  });
+  $("rules").innerHTML=h;
+  $("leg").innerHTML=LEG.map(function(x){return'<span>'+dot(x[0])+x[1]+'</span>'}).join("");
 }
 
 /* ---------- кнопки и настройки ---------- */
 $("n1").onclick=function(){tab(1)};
 $("n2").onclick=function(){tab(2)};
+$("n3").onclick=function(){tab(3)};
 $("go").onclick=function(){
   if(run){stopMic();return}
   if(pos>=W.length)reset();
   stopAudio();
   try{rec.start();run=true;ui();view(pos);msg("Слушаю… читайте с выбранного места.")}catch(e){msg("Не удалось запустить микрофон.")}
 };
+var HI=["👁","🙈","💡"],HT=["Текст виден","Текст скрыт","Подсказка: первая буква"];
 $("hd").onclick=function(){
-  hide=(hide+1)%3;
-  this.textContent="Текст: "+["виден","скрыт","подсказка"][hide];
+  hide=(hide+1)%3;this.textContent=HI[hide];this.title=HT[hide];msg(HT[hide]+".");
   for(var i=0;i<W.length;i++)view(i);
 };
 $("rs").onclick=function(){$("ay").value=0;reset()};
 $("ay").onchange=reset;
 $("pv").onclick=function(){go(-1)};
 $("nx").onclick=function(){go(1)};
-$("pp").onclick=function(){if(page>1)loadPage(page-1)};
-$("np").onclick=function(){if(page<604)loadPage(page+1)};
+function prevP(){if(page>1)loadPage(page-1)}
+function nextP(){if(page<604)loadPage(page+1)}
+$("pp").onclick=prevP;$("pp2").onclick=prevP;
+$("np").onclick=nextP;$("np2").onclick=nextP;
 $("pn").onchange=function(){loadPage(this.value)};
-$("su").onchange=function(){gotoSura(+this.value)};
-$("ju").onchange=function(){var j=+this.value;loadPage(j===1?1:20*(j-1)+2)};
+$("tj").onclick=function(){
+  SET.tj=SET.tj?0:1;saveSet();applyTj();
+  if(!HASTJ)msg("Цвета тааджвида сейчас недоступны (нет данных).");
+};
+$("su").onchange=function(){if(this.value){gotoSura(+this.value);this.value=""}};
+$("ju").onchange=function(){var j=+this.value;if(j){loadPage(j===1?1:20*(j-1)+2);this.value=""}};
 $("lrn").onclick=openDlg;
-$("dw").onclick=function(){$("df").value=0;$("dt").value=AYL.length-1};
+$("ds").onchange=function(){fillAy();$("df").value=1;$("dt").value=cnt(+$("ds").value);DM="range";dlsText()};
+$("df").onchange=$("dt").onchange=function(){DM="range";dlsText()};
+$("dw").onclick=function(){DM="range";$("df").value=1;$("dt").value=cnt(+$("ds").value);dlsText()};
+$("dp").onclick=function(){DM="page";dlsText()};
 $("dlL").onclick=function(){applyRange("learn")};
 $("dlR").onclick=function(){applyRange("rev")};
 $("dlU").onclick=function(){applyRange("un")};
@@ -458,20 +592,21 @@ $("dlC").onclick=function(){$("dl").close()};
 function setFs(d){SET.fs=Math.max(1.3,Math.min(3.2,Math.round((SET.fs+d)*100)/100));document.documentElement.style.setProperty("--fs",SET.fs+"rem");saveSet()}
 $("fm").onclick=function(){setFs(-0.15)};
 $("fp").onclick=function(){setFs(0.15)};
-["qr","sp","rp","md"].forEach(function(id){
+MODES.forEach(function(m){opt($("md"),m[0],m[1])});
+["qr","sp","md"].forEach(function(id){
   if(SET[id]!==undefined)$(id).value=SET[id];
   $(id).onchange=function(){SET[id]=this.value;saveSet();if(id==="sp"&&audio)audio.playbackRate=+this.value};
 });
-setFs(0);
-for(var jj=1;jj<=30;jj++){var oj=mk("option");oj.value=jj;oj.textContent="Джуз "+jj;$("ju").appendChild(oj)}
-function fillSu(){
-  var el=$("su");el.innerHTML="";
-  SU.forEach(function(x){var o=mk("option");o.value=x.n;o.textContent=x.n+". "+x.e;el.appendChild(o)});
+setFs(0);renderRules();
+function fillSj(){
+  var s=$("su"),j=$("ju");s.innerHTML="";j.innerHTML="";
+  opt(s,"","Сура…");SU.forEach(function(x){opt(s,x.n,x.n+". "+x.e)});
+  opt(j,"","Джуз…");for(var k=1;k<=30;k++)opt(j,k,"Джуз "+k);
 }
-if(SU.length)fillSu();
+fillSj();
 fetch(API+"surah").then(function(r){return r.json()}).then(function(j){
   SU=j.data.map(function(x){return{n:x.number,e:x.englishName,a:x.name,c:x.numberOfAyahs}});
-  ls("tartil_su",JSON.stringify(SU));fillSu();stat();
+  ls("tartil_su",JSON.stringify(SU));fillSj();
 }).catch(function(){});
 loadPage(+ls("tartil_pg")||1);
 </script>
