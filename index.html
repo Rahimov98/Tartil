@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Тартил: чтение Корана по памяти</title>
+<title>Тартил: Коран по страницам</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f2f5f7;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d5dbe3;--accent:#1d4e89;--ok:#1b7f5c;--bad:#c0392b;--miss:#b7791f;--okbg:#dff3ea;--badbg:#fbe4e1;--missbg:#fbefd5;--pill:#cfd8e3}
+:root{--bg:#f2f5f7;--card:#fff;--ink:#14213d;--mute:#5b6577;--line:#d5dbe3;--accent:#1d4e89;--ok:#1b7f5c;--bad:#c0392b;--miss:#b7791f;--okbg:#dff3ea;--badbg:#fbe4e1;--missbg:#fbefd5;--pill:#cfd8e3;--fs:1.9rem}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1624;--card:#18223a;--ink:#e8edf6;--mute:#9aa6bd;--line:#2b3957;--accent:#6fa8ee;--ok:#5fd0a0;--bad:#ff8a7a;--miss:#f0c066;--okbg:#14382c;--badbg:#45211d;--missbg:#40320f;--pill:#34445f}}
 :root[data-theme="dark"]{color-scheme:dark;--bg:#0f1624;--card:#18223a;--ink:#e8edf6;--mute:#9aa6bd;--line:#2b3957;--accent:#6fa8ee;--ok:#5fd0a0;--bad:#ff8a7a;--miss:#f0c066;--okbg:#14382c;--badbg:#45211d;--missbg:#40320f;--pill:#34445f}
 *{box-sizing:border-box}
@@ -14,28 +14,43 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-app
 main{max-width:620px;margin:0 auto;padding:12px}
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:6px 0 8px}
 .sel{display:flex;gap:8px}
-select{flex:1;min-width:0;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:1rem;padding:0 8px}
-#ay{flex:0 0 38%}
+select,input[type=number]{min-width:0;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:1rem;padding:0 8px}
+select{flex:1}
 .row{display:flex;gap:8px;margin-top:8px}
 .btn{flex:1;min-height:40px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:var(--bg);font-size:.95rem;font-weight:600;cursor:pointer;padding:0 6px}
 .btn.sec{background:var(--card);color:var(--accent)}
 .btn.stop{background:var(--bad);border-color:var(--bad);color:#fff}
 .btn:disabled{opacity:.5}
-.btn:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.stat{margin:8px 0 0;font-size:.9rem;color:var(--mute)}
+.btn:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pgrow{display:flex;gap:8px;align-items:center}
+.pgrow .btn{flex:0 0 48px}
+.pgmid{flex:1;text-align:center;line-height:1.2}
+.pgmid input{width:84px;text-align:center;font-weight:700}
+.pgmid small{display:block;color:var(--mute);font-size:.78rem;margin-top:2px}
+.stat{margin:8px 0 0;font-size:.85rem;color:var(--mute)}
 .stat b{color:var(--ink)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:6px}
-#text{font-family:Amiri,"Traditional Arabic","Scheherazade New",serif;font-size:1.9rem;line-height:2.4;direction:rtl;text-align:justify}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:8px}
+.card summary{font-weight:600;cursor:pointer}
+.card summary+*{margin-top:10px}
+#tc{border:3px double var(--accent);border-radius:10px}
+#text{font-family:Amiri,"Traditional Arabic","Scheherazade New",serif;font-size:var(--fs);line-height:2.5;direction:rtl;text-align:justify}
+.sh{display:block;text-align:center;border:2px solid var(--accent);border-radius:10px;padding:0 8px;margin:8px 0;color:var(--accent);font-size:1.3rem;line-height:2.1}
+.bsm{display:block;text-align:center;margin:2px 0;line-height:2.2}
 .w{padding:0 3px;border-radius:7px;cursor:pointer}
+.w u{text-decoration:none}
 .w.hid{background:var(--pill);color:transparent;user-select:none}
+.w.hid.hint u{color:var(--ink)}
 .w.hid.peek{background:none;color:inherit}
+.w.hid.peek u{color:inherit}
 .w.ok{background:var(--okbg);color:var(--ok)}
 .w.bad{background:var(--badbg);color:var(--bad)}
 .w.miss{background:var(--missbg);color:var(--miss)}
 .w.skip{opacity:.45}
 .w.cur{box-shadow:0 3px 0 var(--accent)}
-.num{color:var(--accent);font-size:1.2rem;padding:0 2px;user-select:none}
+.w.now{outline:2px solid var(--accent);outline-offset:1px}
+.num{color:var(--accent);font-size:1.2rem;padding:0 2px;cursor:pointer}
 .num.lrn{color:var(--ok);font-weight:700}
+.msg{color:var(--mute);font-size:.85rem;margin:8px 0 0}
 .nav{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);z-index:9}
 .nav button{flex:1;min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:1rem;font-weight:600;cursor:pointer}
 .nav button[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
@@ -43,7 +58,7 @@ select{flex:1;min-width:0;height:40px;border:1px solid var(--line);border-radius
 dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);width:calc(100% - 32px);max-width:420px;padding:16px}
 dialog::backdrop{background:rgba(0,0,0,.55)}
 .big{font-size:2.4rem;font-weight:700;margin:0;line-height:1.1}
-.sc{margin-top:10px}.sc h2{font-size:1rem;margin:0 0 8px}
+.sc h2{font-size:1rem;margin:0 0 8px}
 .pb{height:10px;border-radius:6px;background:var(--pill);overflow:hidden;margin:8px 0}
 .pb i{display:block;height:100%;background:var(--ok);border-radius:6px}
 .pb.g i{background:var(--accent)}
@@ -58,17 +73,16 @@ dialog::backdrop{background:rgba(0,0,0,.55)}
 .tag.ok{background:var(--okbg);color:var(--ok)}
 .kv{display:flex;gap:16px;flex-wrap:wrap;color:var(--mute);font-size:.9rem}
 .kv b{color:var(--ink);font-size:1.1rem}
-input[type=number]{width:70px;height:36px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:1rem;padding:0 8px}
-.msg{color:var(--mute);font-size:.85rem;margin:8px 0 0}
 </style>
 </head>
 <body>
 <main>
 <div id="vr">
 <div class="bar">
-  <div class="sel">
-    <select id="su" aria-label="Сура"></select>
-    <select id="ay" aria-label="Начать с аята"></select>
+  <div class="pgrow">
+    <button class="btn sec" id="pp" aria-label="Предыдущая страница">◀</button>
+    <div class="pgmid"><input type="number" id="pn" min="1" max="604" inputmode="numeric" aria-label="Страница"><small id="pi"></small></div>
+    <button class="btn sec" id="np" aria-label="Следующая страница">▶</button>
   </div>
   <div class="row">
     <button class="btn" id="go">Начать</button>
@@ -80,18 +94,28 @@ input[type=number]{width:70px;height:36px;border:1px solid var(--line);border-ra
     <button class="btn sec" id="nx">След. аят ▶</button>
     <button class="btn sec" id="rs">Сначала</button>
   </div>
-  <div class="row">
-    <select id="qr" aria-label="Чтец">
-      <option value="yasser">Ясир ад-Даусари</option>
-      <option value="husary">Махмуд аль-Хусари</option>
-    </select>
-    <button class="btn sec" id="lis">Слушать аят</button>
-  </div>
   <p class="stat" id="stat" aria-live="polite"></p>
 </div>
-<section class="card"><div id="text" lang="ar"></div></section>
+
+<details class="card">
+  <summary>Перейти, начать с аята, размер текста</summary>
+  <div class="sel"><select id="su" aria-label="Сура"></select><select id="ju" aria-label="Джуз"></select></div>
+  <div class="sel" style="margin-top:8px"><select id="ay" aria-label="Начать с аята"></select>
+    <button class="btn sec" id="fm" aria-label="Уменьшить текст">A−</button><button class="btn sec" id="fp" aria-label="Увеличить текст">A+</button></div>
+</details>
+
+<section class="card">
+  <div class="sel"><select id="qr" aria-label="Чтец"><option value="yasser">Ясир ад-Даусари</option><option value="husary">Махмуд аль-Хусари</option></select>
+    <select id="sp" aria-label="Скорость"><option value="0.75">0.75×</option><option value="1">1×</option><option value="1.25">1.25×</option></select></div>
+  <div class="sel" style="margin-top:8px"><select id="rp" aria-label="Повтор"><option value="1">Без повтора</option><option value="3">Повтор ×3</option><option value="5">Повтор ×5</option><option value="10">Повтор ×10</option><option value="0">Повтор ∞</option></select>
+    <select id="md" aria-label="Что играть"><option value="ay">Только аят</option><option value="page">Вся страница</option></select></div>
+  <div class="row"><button class="btn" id="pl">▶ Слушать</button></div>
+  <p class="msg">Нажмите на номер аята ﴿٣﴾ в тексте, чтобы послушать именно его.</p>
+</section>
+
+<section class="card" id="tc"><div id="text" lang="ar"></div></section>
 <p class="msg" id="msg">Загрузка…</p>
-<p class="msg">Читайте вслух: слова открываются по мере верного чтения. Красное: другое слово, жёлтое: пропущено. Нажмите на скрытое слово, чтобы подсмотреть. Чтобы перечитать предыдущий аят, просто начните читать его заново или нажмите «Пред. аят». Проверяются слова, не тааджвид.</p>
+<p class="msg">Читайте вслух: слова открываются по мере верного чтения. Красное: другое слово, жёлтое: пропущено. «Текст» переключает режимы: скрыт, подсказка (первая буква), виден. Нажмите на скрытое слово, чтобы подсмотреть. Чтобы перечитать предыдущий аят, начните читать его заново или нажмите «Пред. аят». Проверяются слова, не тааджвид. Разбивка на страницы приблизительная: число строк может отличаться от печатного Корана.</p>
 </div>
 <div id="vs" hidden></div>
 </main>
@@ -103,13 +127,23 @@ input[type=number]{width:70px;height:36px;border:1px solid var(--line);border-ra
   <h2 id="dlt" style="font-size:1.1rem;margin:0 0 6px">Отметить выученное</h2>
   <p class="msg" id="dls" style="margin:0 0 10px"></p>
   <div class="sel"><select id="df" aria-label="С аята"></select><select id="dt" aria-label="По аят"></select></div>
-  <div class="row"><button class="btn sec" id="dw">Вся сура</button></div>
+  <div class="row"><button class="btn sec" id="dw">Вся страница</button></div>
   <div class="row"><button class="btn" id="dlL">Выучил</button><button class="btn sec" id="dlR">Повторил</button></div>
   <div class="row"><button class="btn sec" id="dlU">Снять отметку</button><button class="btn sec" id="dlC">Отмена</button></div>
 </dialog>
 <script>
-var API="https://api.alquran.cloud/v1/",sura=1,W=[],pos=0,run=false,hide=true,st={ok:0,bad:0,miss:0},audio=null,lastT="";
+var API="https://api.alquran.cloud/v1/",page=1,W=[],AYL=[],NUM=[],pos=0,run=false,hide=1,st={ok:0,bad:0,miss:0},audio=null,lastT="";
+var TOTAL=6236,SU=[],DB={L:{},goal:5,pg:{}},SET={qr:"yasser",sp:"1",rp:"1",md:"ay",fs:1.9},PL={on:false,g:0,rep:0,k:0};
+var BSM="بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ";
+var QR={yasser:["Yasser_Ad-Dussary_128kbps"],husary:["Husary_128kbps","Husary_64kbps"]};
 var $=function(i){return document.getElementById(i)};
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+try{var raw=JSON.parse(ls("tartil_v2")||"null");if(raw&&raw.L){DB=raw;if(!DB.pg)DB.pg={}}}catch(e){}
+try{SU=JSON.parse(ls("tartil_su")||"[]")}catch(e){SU=[]}
+try{var sv=JSON.parse(ls("tartil_set")||"null");if(sv)for(var q in sv)SET[q]=sv[q]}catch(e){}
+function save(){ls("tartil_v2",JSON.stringify(DB))}
+function saveSet(){ls("tartil_set",JSON.stringify(SET))}
+
 function norm(s){return s.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g,"").replace(/[\u0671\u0622\u0623\u0625]/g,"\u0627").replace(/\u0649/g,"\u064A").replace(/\u0629/g,"\u0647").replace(/\u0627/g,"").trim()}
 function words(s){return s.split(/\s+/).filter(Boolean)}
 function lev(a,b){var m=a.length,n=b.length,d=[],i,j;for(i=0;i<=m;i++)d[i]=[i];for(j=0;j<=n;j++)d[0][j]=j;
@@ -117,22 +151,42 @@ function lev(a,b){var m=a.length,n=b.length,d=[],i,j;for(i=0;i<=m;i++)d[i]=[i];f
 function sim(a,b){var L=Math.max(a.length,b.length);return L?1-lev(a,b)/L:1}
 function msg(t){$("msg").textContent=t}
 function ar(n){return String(n).replace(/\d/g,function(d){return"٠١٢٣٤٥٦٧٨٩"[d]})}
+function p2(n){return("0"+n).slice(-2)}
+function p3(n){return("00"+n).slice(-3)}
+function dstr(d){return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate())}
+function today(){return dstr(new Date())}
+function addDays(ds,k){var d=new Date(ds+"T12:00:00");d.setDate(d.getDate()+k);return dstr(d)}
+function diff(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)}
+function suName(n){return SU[n-1]?SU[n-1].e:"Сура "+n}
+function mk(tag,cls){var e=document.createElement(tag);if(cls)e.className=cls;return e}
 
+/* ---------- отображение ---------- */
 function view(i){
   var w=W[i],c="w";
-  if(w.s)c+=" "+w.s;else if(w.skip)c+=" skip";else if(hide&&!w.peek)c+=" hid";else if(hide)c+=" hid peek";
+  if(w.s)c+=" "+w.s;
+  else if(w.skip)c+=" skip";
+  else if(hide)c+=" hid"+(hide===2?" hint":"")+(w.peek?" peek":"");
   if(i===pos&&run)c+=" cur";
+  if(PL.on&&w.g===PL.g)c+=" now";
   w.el.className=c;
 }
+function viewG(g){if(!AYL[g])return;for(var i=AYL[g].w0;i<=AYL[g].w1;i++)view(i)}
+function markNums(){NUM.forEach(function(m,g){m.className="num"+(DB.L[AYL[g].k]?" lrn":"")})}
 function stat(){
-  var n=st.ok+st.bad+st.miss,p=n?Math.round(st.ok/n*100):0;
-  $("stat").innerHTML="Верно <b>"+st.ok+"</b> · ошибок <b>"+st.bad+"</b> · пропущено <b>"+st.miss+"</b> · точность <b>"+p+"%</b> · слово "+Math.min(pos+1,W.length)+"/"+W.length;
+  var n=st.ok+st.bad+st.miss,p=n?Math.round(st.ok/n*100):0,lc=0;
+  AYL.forEach(function(a){if(DB.L[a.k])lc++});
+  $("stat").innerHTML="Верно <b>"+st.ok+"</b> · ошибок <b>"+st.bad+"</b> · пропущено <b>"+st.miss+"</b> · точность <b>"+p+"%</b> · слово "+Math.min(pos+1,W.length)+"/"+W.length+" · выучено аятов <b>"+lc+"/"+AYL.length+"</b>";
 }
-function update(oldPos){
-  for(var i=Math.max(0,oldPos-1);i<=Math.min(W.length-1,pos);i++)view(i);
-  stat();
-  if(W[pos])W[pos].el.scrollIntoView({block:"center",behavior:"smooth"});
-  if(pos>=W.length&&run){stop();msg("Сура завершена! Точность: "+Math.round(st.ok/Math.max(1,st.ok+st.bad+st.miss)*100)+"%")}
+function toWord(i){if(W[i])W[i].el.scrollIntoView({block:"center",behavior:"smooth"})}
+function update(old){
+  for(var i=Math.max(0,old-1);i<=Math.min(W.length-1,pos);i++)view(i);
+  stat();toWord(pos);
+  if(pos>=W.length&&run){
+    stop();
+    var n=Math.max(1,st.ok+st.bad+st.miss),p=Math.round(st.ok/n*100),b=DB.pg[page];
+    if(!b||p>b.b)DB.pg[page]={b:p,d:today()};save();
+    msg("Страница завершена! Точность: "+p+"%. Нажмите «✓ Выучил» или откройте следующую страницу ▶.");
+  }
 }
 function mark(i,s){W[i].s=s}
 function seek(p){
@@ -141,13 +195,7 @@ function seek(p){
   pos=p;st={ok:0,bad:0,miss:0};
   for(i=0;i<p;i++){if(W[i].s)st[W[i].s]++}
   for(i=Math.max(0,p-1);i<=Math.min(W.length-1,Math.max(old,p));i++)view(i);
-  stat();if(W[pos])W[pos].el.scrollIntoView({block:"center",behavior:"smooth"});
-}
-function ayStart(a){for(var i=0;i<W.length;i++){if(W[i].a===a)return i}return -1}
-function go(d){
-  if(!W.length)return;
-  var cur=W[Math.min(pos,W.length-1)].a,t=ayStart(cur+d);
-  if(t>=0)seek(t);
+  stat();toWord(pos);
 }
 function feed(list){
   if(list.length>=2&&pos>0){
@@ -171,36 +219,64 @@ function feed(list){
   update(old);
 }
 function reset(){
-  stop();var a=+$("ay").value;st={ok:0,bad:0,miss:0};pos=0;
-  W.forEach(function(w){w.s="";w.peek=false;w.skip=w.a<a-1});
-  while(pos<W.length&&W[pos].a<a-1)pos++;
+  stopMic();var g=+$("ay").value||0;st={ok:0,bad:0,miss:0};
+  W.forEach(function(w){w.s="";w.peek=false;w.skip=w.g<g});
+  pos=AYL[g]?AYL[g].w0:0;
   for(var i=0;i<W.length;i++)view(i);
-  stat();msg("Нажмите «Начать» и читайте вслух.");
-  if(W[pos])W[pos].el.scrollIntoView({block:"center"});
+  stat();msg("Нажмите «Начать» и читайте вслух.");toWord(pos);
 }
-function load(n){
-  stop();sura=n;msg("Загрузка…");
-  fetch(API+"surah/"+n+"/quran-uthmani").then(function(r){return r.json()}).then(function(j){
-    var a=j.data.ayahs,box=$("text"),ay=$("ay");
-    W=[];NUM=[];box.innerHTML="";ay.innerHTML="";
-    a.forEach(function(x,i){
+function go(d){
+  if(!W.length)return;
+  var g=W[Math.min(pos,W.length-1)].g+d;
+  if(g<0||g>=AYL.length){msg("Это край страницы. Листайте страницы стрелками ◀ ▶.");return}
+  seek(AYL[g].w0);
+}
+
+/* ---------- загрузка страницы ---------- */
+function fail(){msg("Не удалось загрузить данные. Нужен интернет.")}
+function loadPage(p){
+  p=Math.max(1,Math.min(604,Math.round(+p)||1));
+  stopAll();msg("Загрузка…");
+  fetch(API+"page/"+p+"/quran-uthmani").then(function(r){return r.json()}).then(function(j){
+    var ays=j.data.ayahs,box=$("text"),ay=$("ay"),names=[];
+    page=p;ls("tartil_pg",p);$("pn").value=p;
+    W=[];AYL=[];NUM=[];box.innerHTML="";ay.innerHTML="";
+    ays.forEach(function(x,g){
+      var sn=x.surah.number,an=x.numberInSurah;
+      if(names.indexOf(x.surah.englishName)<0)names.push(x.surah.englishName);
+      if(an===1){
+        var h=mk("div","sh");h.textContent=x.surah.name;box.appendChild(h);
+        if(sn!==1&&sn!==9){var b=mk("div","bsm");b.textContent=BSM;box.appendChild(b)}
+      }
       var ws=words(x.text);
-      if(i===0&&n!==1&&n!==9&&norm(ws[0])==="بسم")ws=ws.slice(4);
+      if(an===1&&sn!==1&&sn!==9&&norm(ws[0])==="بسم")ws=ws.slice(4);
+      var w0=W.length;
       ws.forEach(function(t){
-        var s=document.createElement("span"),o={n:norm(t),a:i,el:s,s:"",peek:false,skip:false};
-        s.textContent=t;s.onclick=function(){if(!o.s){o.peek=!o.peek;view(W.indexOf(o))}};
+        var s=mk("span","w"),u=mk("u"),m=t.match(/^([\s\S][\u064B-\u065F\u0670\u06D6-\u06ED]*)([\s\S]*)$/),o={n:norm(t),g:g,el:s,s:"",peek:false,skip:false};
+        u.textContent=m?m[1]:t;s.appendChild(u);if(m&&m[2])s.appendChild(document.createTextNode(m[2]));
+        s.onclick=function(){if(!o.s){o.peek=!o.peek;view(W.indexOf(o))}};
         W.push(o);box.appendChild(s);box.appendChild(document.createTextNode(" "));
       });
-      var m=document.createElement("span");m.className="num";m.textContent="\uFD3F"+ar(i+1)+"\uFD3E";
-      NUM.push(m);box.appendChild(m);box.appendChild(document.createTextNode(" "));
-      var op=document.createElement("option");op.value=i+1;op.textContent="Аят "+(i+1);ay.appendChild(op);
+      var nm=mk("span","num");nm.textContent="\uFD3F"+ar(an)+"\uFD3E";
+      nm.onclick=function(){stopMic();PL.rep=0;playG(g,0)};
+      NUM.push(nm);box.appendChild(nm);box.appendChild(document.createTextNode(" "));
+      AYL.push({s:sn,a:an,k:sn+":"+an,w0:w0,w1:W.length-1});
+      var op=mk("option");op.value=g;op.textContent=sn+":"+an;ay.appendChild(op);
     });
-    markNums();reset();
-  }).catch(function(){msg("Не удалось загрузить данные. Нужен интернет.")});
+    $("pi").textContent="Джуз "+ays[0].juz+" · "+names.join(", ");
+    markNums();reset();window.scrollTo(0,0);
+  }).catch(fail);
 }
+function gotoSura(n){
+  msg("Загрузка…");
+  fetch(API+"ayah/"+n+":1").then(function(r){return r.json()}).then(function(j){loadPage(j.data.page)}).catch(fail);
+}
+
+/* ---------- распознавание речи ---------- */
 var SR=window.SpeechRecognition||window.webkitSpeechRecognition,rec=null;
 function ui(){var g=$("go");g.textContent=run?"Стоп":"Начать";g.className="btn"+(run?" stop":"")}
-function stop(){run=false;if(rec){try{rec.stop()}catch(e){}}ui();if(W[pos])view(pos)}
+function stopMic(){run=false;if(rec){try{rec.stop()}catch(e){}}ui();if(W[pos])view(pos)}
+function stop(){stopMic()}
 if(SR){
   rec=new SR();rec.lang="ar-SA";rec.continuous=true;rec.interimResults=false;
   rec.onstart=function(){lastT=""};
@@ -214,73 +290,71 @@ if(SR){
   };
   rec.onend=function(){if(run){try{rec.start()}catch(e){}}};
   rec.onerror=function(e){
-    if(e.error==="not-allowed"||e.error==="service-not-allowed"){stop();msg("Нет доступа к микрофону. Разрешите его в браузере.")}
+    if(e.error==="not-allowed"||e.error==="service-not-allowed"){stopMic();msg("Нет доступа к микрофону. Разрешите его в браузере.")}
     else if(e.error!=="no-speech"&&e.error!=="aborted")msg("Ошибка распознавания: "+e.error);
   };
 }else{$("go").disabled=true;msg("Распознавание речи не поддерживается. Откройте в Chrome или Edge.")}
-$("go").onclick=function(){
-  if(run){stop();return}
-  if(pos>=W.length)reset();
-  try{rec.start();run=true;ui();view(pos);msg("Слушаю… читайте с выбранного места.")}catch(e){msg("Не удалось запустить микрофон.")}
-};
-$("hd").onclick=function(){hide=!hide;this.textContent="Текст: "+(hide?"скрыт":"виден");for(var i=0;i<W.length;i++)view(i)};
-$("rs").onclick=function(){$("ay").value=1;reset()};
-$("ay").onchange=reset;
-$("su").onchange=function(){load(+this.value)};
-var QR={yasser:["Yasser_Ad-Dussary_128kbps"],husary:["Husary_128kbps","Husary_64kbps"]};
-function p3(n){return("00"+n).slice(-3)}
-function playAyah(a,k){
-  k=k||0;var f=QR[$("qr").value];
-  if(k>=f.length){msg("Аудио этого чтеца для аята не найдено.");return}
-  if(audio)audio.pause();
-  audio=new Audio("https://everyayah.com/data/"+f[k]+"/"+p3(sura)+p3(a+1)+".mp3");
-  audio.onerror=function(){playAyah(a,k+1)};
-  audio.play().catch(function(){});
-}
-$("lis").onclick=function(){var w=W[Math.min(pos,W.length-1)];if(w)playAyah(w.a)};
-$("pv").onclick=function(){go(-1)};
-$("nx").onclick=function(){go(1)};
-try{var q=localStorage.getItem("tartil_qr");if(q&&QR[q])$("qr").value=q}catch(e){}
-$("qr").onchange=function(){try{localStorage.setItem("tartil_qr",this.value)}catch(e){}};
-/* ===== Прогресс заучивания ===== */
-var NUM=[],SU=[],TOTAL=6236,DB={L:{},goal:5};
-try{var raw=JSON.parse(localStorage.getItem("tartil_v2")||"null");if(raw&&raw.L)DB=raw}catch(e){}
-try{SU=JSON.parse(localStorage.getItem("tartil_su")||"[]")}catch(e){SU=[]}
-function save(){try{localStorage.setItem("tartil_v2",JSON.stringify(DB))}catch(e){}}
-function p2(n){return("0"+n).slice(-2)}
-function dstr(d){return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate())}
-function today(){return dstr(new Date())}
-function addDays(ds,k){var d=new Date(ds+"T12:00:00");d.setDate(d.getDate()+k);return dstr(d)}
-function diff(a,b){return Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)}
-function markNums(){NUM.forEach(function(m,i){m.className="num"+(DB.L[sura+":"+(i+1)]?" lrn":"")})}
-function suName(n){return SU[n-1]?SU[n-1].e:"Сура "+n}
 
-function fillSu(){
-  var el=$("su");el.innerHTML="";
-  SU.forEach(function(x){var o=document.createElement("option");o.value=x.n;o.textContent=x.n+". "+x.e+" ("+x.c+")";el.appendChild(o)});
+/* ---------- аудио чтеца ---------- */
+function stopAudio(){
+  var g=PL.g;PL.on=false;
+  if(audio){audio.onended=null;audio.onerror=null;audio.pause()}
+  $("pl").textContent="▶ Слушать";$("pl").className="btn";viewG(g);
 }
-function openDlg(){
+function stopAll(){stopMic();stopAudio()}
+function playG(g,k){
+  if(!AYL[g])return;
+  var old=PL.g,f=QR[SET.qr];
+  if(audio){audio.onended=null;audio.onerror=null;audio.pause()}
+  PL.g=g;PL.k=k;PL.on=true;viewG(old);viewG(g);
+  $("pl").textContent="■ Стоп";$("pl").className="btn stop";
+  toWord(AYL[g].w0);
+  var a=AYL[g],au=new Audio("https://everyayah.com/data/"+f[k]+"/"+p3(a.s)+p3(a.a)+".mp3");
+  audio=au;au.playbackRate=+SET.sp||1;
+  au.onerror=function(){
+    if(k+1<f.length)playG(g,k+1);else{stopAudio();msg("Аудио этого чтеца для аята не найдено.")}
+  };
+  au.onended=function(){
+    PL.rep++;var R=+SET.rp;
+    if(R===0||PL.rep<R){setTimeout(function(){if(PL.on&&audio===au)playG(g,PL.k)},600)}
+    else if(SET.md==="page"&&g+1<AYL.length){PL.rep=0;setTimeout(function(){if(PL.on&&audio===au)playG(g+1,PL.k)},400)}
+    else stopAudio();
+  };
+  au.play().catch(function(){});
+}
+$("pl").onclick=function(){
+  if(PL.on){stopAudio();return}
   if(!W.length)return;
-  var n=W[W.length-1].a+1,f=+$("ay").value,st0=ayStart(f-1),t=pos>st0?W[Math.min(pos,W.length)-1].a+1:f;
-  ["df","dt"].forEach(function(id){var el=$(id);el.innerHTML="";for(var k=1;k<=n;k++){var o=document.createElement("option");o.value=k;o.textContent="Аят "+k;el.appendChild(o)}});
+  stopMic();PL.rep=0;
+  playG(W[Math.min(pos,W.length-1)].g,0);
+};
+
+/* ---------- «Выучил» ---------- */
+function openDlg(){
+  if(!AYL.length)return;
+  var f=+$("ay").value||0,t=pos>AYL[f].w0?W[Math.min(pos,W.length)-1].g:f;
+  ["df","dt"].forEach(function(id){
+    var el=$(id);el.innerHTML="";
+    AYL.forEach(function(a,g){var o=mk("option");o.value=g;o.textContent=suName(a.s)+" "+a.a;el.appendChild(o)});
+  });
   $("df").value=f;$("dt").value=Math.max(f,t);
-  $("dls").textContent=suName(sura)+": выберите, какие аяты отметить.";
+  $("dls").textContent="Страница "+page+": выберите аяты.";
   $("dl").showModal();
 }
 function applyRange(mode){
-  var f=+$("df").value,t=+$("dt").value,c=0,a,k;
-  if(f>t){a=f;f=t;t=a}
-  for(a=f;a<=t;a++){
-    k=sura+":"+a;
+  var f=+$("df").value,t=+$("dt").value,c=0,g,k,x;
+  if(f>t){x=f;f=t;t=x}
+  for(g=f;g<=t;g++){
+    k=AYL[g].k;
     if(mode==="learn"){if(!DB.L[k]){DB.L[k]={d:today(),r:today()};c++}else DB.L[k].r=today()}
     else if(mode==="rev"){if(DB.L[k]){DB.L[k].r=today();c++}}
     else if(DB.L[k]){delete DB.L[k];c++}
   }
-  save();markNums();$("dl").close();
+  save();markNums();stat();$("dl").close();
   msg(mode==="learn"?"Выучено новых аятов: "+c+".":mode==="rev"?"Повторено аятов: "+c+".":"Отметка снята с аятов: "+c+".");
 }
 
-/* ===== Статистика ===== */
+/* ---------- статистика ---------- */
 function streaks(days){
   var d=today(),s=0,ks=Object.keys(days).sort(),b=0,c=0,prev=null;
   if(!days[d])d=addDays(d,-1);
@@ -297,6 +371,7 @@ function stats(){
     if(!oldR[n]||e.r<oldR[n])oldR[n]=e.r;
   });
   SU.forEach(function(x){if(per[x.n]>=x.c)done++});
+  var pk=Object.keys(DB.pg),pa=0;pk.forEach(function(k){pa+=DB.pg[k].b});
   var td=days[t]||0,goal=DB.goal||5,sk=streaks(days),sum30=0;
   for(i=0;i<30;i++)sum30+=days[addDays(t,-i)]||0;
   var avg=sum30/30,left=TOTAL-cnt,pace="";
@@ -317,10 +392,12 @@ function stats(){
   });
   $("vs").innerHTML=
    '<div class="card sc"><h2>Весь Коран</h2><p class="big">'+(cnt/TOTAL*100).toFixed(2)+'%</p>'+bar(cnt/TOTAL*100)+
-   '<div class="kv"><span><b>'+cnt+'</b> из '+TOTAL+' аятов</span><span><b>'+done+'</b> из 114 сур</span></div><p class="msg">'+pace+'</p></div>'+
+   '<div class="kv"><span><b>'+cnt+'</b> из '+TOTAL+' аятов</span><span><b>'+done+'</b> из 114 сур</span></div>'+
+   '<div class="kv" style="margin-top:6px"><span><b>'+pk.length+'</b> из 604 стр. прочитано</span>'+(pk.length?'<span>средняя точность <b>'+Math.round(pa/pk.length)+'%</b></span>':"")+'</div>'+
+   '<p class="msg">'+pace+'</p></div>'+
    '<div class="card sc"><h2>Сегодня</h2><div class="kv"><span><b>'+td+'</b> аят из цели <b>'+goal+'</b></span><span>Серия: <b>'+sk[0]+'</b> дн.</span><span>Рекорд: <b>'+sk[1]+'</b> дн.</span></div>'+bar(td/goal*100,"g")+
    '<p class="msg">'+(td>=goal?"Цель на сегодня выполнена!":"Осталось до цели: "+(goal-td)+".")+'</p>'+
-   '<label class="msg">Цель в день, аятов: <input type="number" id="goal" min="1" max="500" value="'+goal+'"></label></div>'+
+   '<label class="msg">Цель в день, аятов: <input type="number" id="goal" min="1" max="500" value="'+goal+'" style="width:70px;height:36px"></label></div>'+
    '<div class="card sc"><h2>Последние 7 дней</h2><div class="chart">'+ch+'</div></div>'+
    '<div class="card sc"><h2>Мои суры</h2>'+(rows||'<p class="msg" style="margin:0">Пока ничего не выучено. В разделе «Чтение» нажмите «✓ Выучил».</p>')+
    '<p class="msg">Метка «повторить» появляется, если аяты не повторяли 7 дней и больше. Отметить повторение: «✓ Выучил» → «Повторил».</p></div>'+
@@ -328,41 +405,75 @@ function stats(){
    '<div class="row"><button class="btn sec" id="rz">Сбросить прогресс</button></div><input type="file" id="fi" accept=".json" hidden>'+
    '<p class="msg">Прогресс хранится в этом браузере. Сохраняйте копию, чтобы не потерять его.</p></div>';
   $("goal").onchange=function(){DB.goal=Math.max(1,Math.min(500,+this.value||5));save();stats()};
-  Array.prototype.forEach.call(document.querySelectorAll(".rowb"),function(b){b.onclick=function(){var n=+b.dataset.n;tab(1);$("su").value=n;load(n)}});
+  Array.prototype.forEach.call(document.querySelectorAll(".rowb"),function(b){b.onclick=function(){tab(1);gotoSura(+b.dataset.n)}});
   $("ex").onclick=function(){
-    var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(DB)],{type:"application/json"}));
+    var a=mk("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(DB)],{type:"application/json"}));
     a.download="tartil-progress-"+t+".json";a.click();
   };
   $("im").onclick=function(){$("fi").click()};
   $("fi").onchange=function(){
     var f=this.files[0];if(!f)return;var r=new FileReader();
     r.onload=function(){try{var o=JSON.parse(r.result);if(!o.L||typeof o.L!=="object")throw 0;
-      if(confirm("Заменить текущий прогресс загруженной копией?")){DB={L:o.L,goal:o.goal||5};save();stats()}}catch(e){alert("Неверный файл копии.")}};
+      if(confirm("Заменить текущий прогресс загруженной копией?")){DB={L:o.L,goal:o.goal||5,pg:o.pg||{}};save();stats()}}catch(e){alert("Неверный файл копии.")}};
     r.readAsText(f);
   };
-  $("rz").onclick=function(){if(confirm("Удалить весь прогресс? Это нельзя отменить.")){DB={L:{},goal:DB.goal||5};save();stats()}};
+  $("rz").onclick=function(){if(confirm("Удалить весь прогресс? Это нельзя отменить.")){DB={L:{},goal:DB.goal||5,pg:{}};save();stats()}};
 }
 function tab(i){
   $("vr").hidden=i!==1;$("vs").hidden=i!==2;
   $("n1").setAttribute("aria-pressed",i===1);$("n2").setAttribute("aria-pressed",i===2);
-  if(i===2){stop();stats()}else markNums();
+  if(i===2){stopAll();stats()}else{markNums();stat()}
   window.scrollTo(0,0);
 }
+
+/* ---------- кнопки и настройки ---------- */
 $("n1").onclick=function(){tab(1)};
 $("n2").onclick=function(){tab(2)};
+$("go").onclick=function(){
+  if(run){stopMic();return}
+  if(pos>=W.length)reset();
+  stopAudio();
+  try{rec.start();run=true;ui();view(pos);msg("Слушаю… читайте с выбранного места.")}catch(e){msg("Не удалось запустить микрофон.")}
+};
+$("hd").onclick=function(){
+  hide=(hide+1)%3;
+  this.textContent="Текст: "+["виден","скрыт","подсказка"][hide];
+  for(var i=0;i<W.length;i++)view(i);
+};
+$("rs").onclick=function(){$("ay").value=0;reset()};
+$("ay").onchange=reset;
+$("pv").onclick=function(){go(-1)};
+$("nx").onclick=function(){go(1)};
+$("pp").onclick=function(){if(page>1)loadPage(page-1)};
+$("np").onclick=function(){if(page<604)loadPage(page+1)};
+$("pn").onchange=function(){loadPage(this.value)};
+$("su").onchange=function(){gotoSura(+this.value)};
+$("ju").onchange=function(){var j=+this.value;loadPage(j===1?1:20*(j-1)+2)};
 $("lrn").onclick=openDlg;
-$("dw").onclick=function(){$("df").value=1;$("dt").value=$("dt").options.length};
+$("dw").onclick=function(){$("df").value=0;$("dt").value=AYL.length-1};
 $("dlL").onclick=function(){applyRange("learn")};
 $("dlR").onclick=function(){applyRange("rev")};
 $("dlU").onclick=function(){applyRange("un")};
 $("dlC").onclick=function(){$("dl").close()};
-
+function setFs(d){SET.fs=Math.max(1.3,Math.min(3.2,Math.round((SET.fs+d)*100)/100));document.documentElement.style.setProperty("--fs",SET.fs+"rem");saveSet()}
+$("fm").onclick=function(){setFs(-0.15)};
+$("fp").onclick=function(){setFs(0.15)};
+["qr","sp","rp","md"].forEach(function(id){
+  if(SET[id]!==undefined)$(id).value=SET[id];
+  $(id).onchange=function(){SET[id]=this.value;saveSet();if(id==="sp"&&audio)audio.playbackRate=+this.value};
+});
+setFs(0);
+for(var jj=1;jj<=30;jj++){var oj=mk("option");oj.value=jj;oj.textContent="Джуз "+jj;$("ju").appendChild(oj)}
+function fillSu(){
+  var el=$("su");el.innerHTML="";
+  SU.forEach(function(x){var o=mk("option");o.value=x.n;o.textContent=x.n+". "+x.e;el.appendChild(o)});
+}
+if(SU.length)fillSu();
 fetch(API+"surah").then(function(r){return r.json()}).then(function(j){
   SU=j.data.map(function(x){return{n:x.number,e:x.englishName,a:x.name,c:x.numberOfAyahs}});
-  try{localStorage.setItem("tartil_su",JSON.stringify(SU))}catch(e){}
-  fillSu();load(1);
-}).catch(function(){if(SU.length)fillSu();msg("Не удалось загрузить список сур. Нужен интернет.")});
+  ls("tartil_su",JSON.stringify(SU));fillSu();stat();
+}).catch(function(){});
+loadPage(+ls("tartil_pg")||1);
 </script>
 </body>
 </html>
-
